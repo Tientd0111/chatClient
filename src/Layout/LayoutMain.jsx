@@ -5,9 +5,7 @@ const LayoutMain = ({children}) => {
    return (
       <div>
          <Header/>
-         <div className="tyn-content tyn-content-full-height tyn-chat has-aside-base">
-            {children}
-         </div>
+         {children}
       </div>
    )
 }
