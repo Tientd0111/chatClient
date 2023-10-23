@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { checkAuth } from './routes/checkAuth'
-import Home from '@/pages/home/Home'
+import Home from '@/pages/chat/Home'
 import React, { useEffect, useState } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 
