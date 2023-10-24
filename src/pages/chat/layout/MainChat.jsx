@@ -3,6 +3,7 @@ import FooterChat from '@/components/chat/FooterChat.jsx'
 import HeaderChat from '@/components/chat/HeaderChat.jsx'
 import InfoChat from '@/components/chat/InfoChat.jsx'
 import useConversationStore from '@/stores/useConversationStore.jsx'
+import MessageChat from '@/components/chat/MessageChat.jsx'
 
 const MainChat = ({idConversation}) => {
    const [showInfo,setShowInfo] = useState(true)
@@ -28,6 +29,7 @@ const MainChat = ({idConversation}) => {
             onDisplayInfo={displayInfo}
             infoConversation={infoConversation}
          />
+         <MessageChat idConversation={idConversation}/>
          <InfoChat showInfo={showInfo} infoConversation={infoConversation}/>
          <FooterChat/>
       </div>

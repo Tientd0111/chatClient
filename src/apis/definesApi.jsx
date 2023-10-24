@@ -11,6 +11,9 @@ const apis = {
    },
    getConversationById:{
       uri: 'conversation/'
+   },
+   getListMessage:{
+      uri: 'message/list-message/'
    }
 }
 export default apis
