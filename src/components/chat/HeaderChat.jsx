@@ -1,6 +1,8 @@
 import React from 'react'
+import environmentConfig from '@/apis/environmentConfig.jsx'
 
-const HeaderChat = ({showInfo,onDisplayInfo}) => {
+const HeaderChat = ({showInfo,onDisplayInfo,infoConversation}) => {
+   const id = "6535d27eee0919d8f975b58a"
    return (
       <>
          <div className="tyn-chat-head">
@@ -26,15 +28,21 @@ const HeaderChat = ({showInfo,onDisplayInfo}) => {
             </ul>
             <div className="tyn-media-group">
                <div className="tyn-media tyn-size-lg d-none d-sm-inline-flex">
-                  <img src="../../../../src/assets/images/avatar/1.jpg" alt="" />
+                  <img src={
+                     infoConversation?.user_1?._id === id ?
+                        (environmentConfig.BASE_URI + infoConversation?.user_2?.avatar) : (environmentConfig.BASE_URI + infoConversation?.user_1?.avatar)
+                  } alt="" />
                </div>
                <div className="tyn-media tyn-size-rg d-sm-none">
-                  <img src="../../../../src/assets/images/avatar/1.jpg" alt="" />
+                  <img src={
+                     infoConversation?.user_1?._id === id ?
+                        (environmentConfig.BASE_URI + infoConversation?.user_2?.avatar) : (environmentConfig.BASE_URI + infoConversation?.user_1?.avatar)
+                  } alt="" />
                </div>
                <div className="tyn-media-col">
                   <div className="tyn-media-row">
                      <h6 className="name">
-                        Jasmine <span className="d-none d-sm-inline-block">Thompson</span>
+                        <span className="d-none d-sm-inline-block">{infoConversation?.user_1?._id === id ? infoConversation?.user_2?.name : infoConversation?.user_1?.name}</span>
                      </h6>
                   </div>
                   <div className="tyn-media-row has-dot-sap">
