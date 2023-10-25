@@ -1,25 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import useMessageStore from '@/stores/useMessageStore.jsx'
 
-const MessageChat = ({idConversation}) => {
-   const id = "6535d27eee0919d8f975b58a"
-   const [listMessage,setListMessage] = useState()
-
-   const {getListMessage} = useMessageStore(state => ({
-      getListMessage: state.getListMessage
-   }))
-
-   useEffect(()=>{
-         getListMessage(idConversation).then(res => {
-            setListMessage(res?.message)
-         })
-   },[idConversation])
-
-   console.log("x",listMessage)
+const MessageChat = ({listMessage}) => {
+   const id = JSON.parse(localStorage?.getItem("user"))._id
 
    return (
       <div className="tyn-chat-body js-scroll-to-end" id="tynChatBody">
-         <div className="tyn-reply" id="tynReply">
+         <div className="tyn-reply" style={{flexDirection:'column'}}>
             {listMessage?.map((item)=>(
                <div key={item?._id} className={`tyn-reply-item  ${item?.sender?._id === id ? "outgoing":"incoming"}`}>
                   <div className="tyn-reply-group">

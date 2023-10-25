@@ -3,7 +3,8 @@ import { Tabs } from 'antd'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const InfoChat = ({ showInfo ,infoConversation}) => {
-   const id = "6535d27eee0919d8f975b58a"
+   const id = JSON.parse(localStorage?.getItem("user"))._id
+
    const [tabAct,setTabAct] = useState("media")
 
    const handleTab = (tab) => {

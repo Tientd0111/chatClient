@@ -1,8 +1,9 @@
 import React from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
+import { getDate } from '@/utils/getDate.jsx'
 
 const SideBarChat = ({listConversation,idConversation,chooseConversation}) => {
-   const id = "6535d27eee0919d8f975b58a"
+   const id = JSON.parse(localStorage?.getItem("user"))._id
    return (
       <div className="tyn-aside tyn-aside-base">
          <div className="tyn-aside-head">
@@ -122,7 +123,7 @@ const SideBarChat = ({listConversation,idConversation,chooseConversation}) => {
                >
                   <ul className="tyn-aside-list">
                      {listConversation?.map((item)=>(
-                        <li key={item?.id}
+                        <li key={item?._id}
                             className={`tyn-aside-item js-toggle-main ${idConversation === item?._id ? "active" :""}`}
                             onClick={()=>chooseConversation(item?._id)}
                         >
@@ -141,8 +142,12 @@ const SideBarChat = ({listConversation,idConversation,chooseConversation}) => {
                                     <span className="typing">typing ...</span>
                                  </div>
                                  <div className="tyn-media-row has-dot-sap">
-                                    <p className="content">{item?.message?.sender === id ? `Bạn: ${item?.message?.content}`: item?.message?.content}</p>
-                                    <span className="meta">45 min</span>
+                                    {item?.message &&
+                                       <>
+                                          <p className="content">{item?.message?.sender === id ? `Bạn: ${item?.message?.content}`: item?.message?.content}</p>
+                                          <span className="meta">{getDate(item?.message?.created_at)}</span>
+                                       </>
+                                    }
                                  </div>
                               </div>
                               <div className="tyn-media-option tyn-aside-item-option">

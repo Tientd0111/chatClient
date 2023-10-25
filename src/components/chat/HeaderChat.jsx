@@ -2,7 +2,8 @@ import React from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const HeaderChat = ({showInfo,onDisplayInfo,infoConversation}) => {
-   const id = "6535d27eee0919d8f975b58a"
+   const id = JSON.parse(localStorage?.getItem("user"))._id
+
    return (
       <>
          <div className="tyn-chat-head">

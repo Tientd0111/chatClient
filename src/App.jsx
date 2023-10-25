@@ -4,10 +4,13 @@ import Home from '@/pages/chat/Home'
 import React, { useEffect, useState } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 import Login from '@/pages/user/Login.jsx'
+import PrivateRoute from '@/routes/privateRoute.jsx'
 
 function App() {
    const isAuthenticated = checkAuth()
    const {currentMode} = useStateContext()
+
+   console.log(isAuthenticated)
    return (
       <div data-bs-theme={currentMode}>
          <div className={"tyn-body"}>
@@ -15,11 +18,12 @@ function App() {
                <div className="app">
                   <BrowserRouter>
                      <Routes>
-                        <Route path="/" element={<Home />}>
+                        <Route path="*" element={<PrivateRoute />}>
+                           <Route path={"chat"} element={<Home/>}/>
                         </Route>
                         <Route
                            path="/login"
-                           element={isAuthenticated ? <Navigate to={'/'} /> : <Login />}
+                           element={isAuthenticated ? <Home /> : <Login />}
                         />
                      </Routes>
                   </BrowserRouter>

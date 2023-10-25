@@ -1,6 +1,23 @@
 import React from 'react'
+import FormInput from '@/components/FormInput.jsx'
+import { useForm } from 'react-hook-form'
+import useUserStore from '@/stores/useUserStore.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+   const navigate = useNavigate()
+   const { handleSubmit, control, reset } = useForm({ shouldUseNativeValidation: true });
+   const {login} = useUserStore(state => ({
+      login: state.login
+   }));
+
+   const onLogin = async data => {
+      const {isAuth} = await login(data)
+      if(isAuth) {
+         reset({username: '', password: ''})
+         navigate("/chat")
+      }
+   };
    return (
       <div className="tyn-content tyn-auth tyn-auth-centered">
          <div className="container">
@@ -33,42 +50,28 @@ const Login = () => {
                         <h3>Login</h3>
                         <div className="row g-3">
                            <div className="col-12">
-                              <div className="form-group">
-                                 <label className="form-label" htmlFor="email-address">
-                                    Email Address
-                                 </label>
-                                 <div className="form-control-wrap">
-                                    <input
-                                       type="text"
-                                       className="form-control"
-                                       id="email-address"
-                                       placeholder="youremail@example.com"
-                                    />
-                                 </div>
-                              </div>
+                              <FormInput
+                                 name={'username'}
+                                 rules={{required: "Vui lòng nhập tên đăng nhập."}}
+                                 placeholder={'Nhập tên đăng nhập...'}
+                                 label={'Tên đăng nhập'}
+                                 control={control}
+                              />
+
                            </div>
                            <div className="col-12">
-                              <div className="form-group">
-                                 <label className="form-label d-flex" htmlFor="password">
-                                    Password{" "}
-                                    <a href="forgot.html" className="link link-primary ms-auto">
-                                       Forgot ?
-                                    </a>
-                                 </label>
-                                 <div className="form-control-wrap">
-                                    <input
-                                       type="password"
-                                       className="form-control"
-                                       id="password"
-                                       placeholder="password"
-                                    />
-                                 </div>
-                              </div>
+                              <FormInput
+                                 name={'password'}
+                                 rules={{required: "Vui lòng nhập mật khẩu."}}
+                                 placeholder={'Nhập mật khẩu...'}
+                                 label={'Mật khẩu'}
+                                 control={control}
+                              />
                            </div>
                            <div className="col-12">
-                              <a className="btn btn-primary w-100" href="index.html">
+                              <span onClick={handleSubmit(onLogin)} className="btn btn-primary w-100" href="index.html">
                                  Account Login
-                              </a>
+                              </span>
                            </div>
                         </div>
                         {/* .row */}

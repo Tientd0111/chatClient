@@ -23,6 +23,12 @@ const Header = () => {
    const [openModalProfile,setOpenModalProfile] = useState(false)
    const {currentMode,setCurrentMode} = useStateContext()
 
+   const onLogout = () => {
+      localStorage.removeItem('key')
+      localStorage.removeItem('user')
+      window.location.reload()
+   }
+
    return (
       <nav className="tyn-appbar">
          <div className="tyn-appbar-wrap">
@@ -323,15 +329,15 @@ const Header = () => {
                            </li>
                            <li className="dropdown-divider"></li>
                            <li>
-                              <Link to={"login.html"}>
+                              <span>
                                  {/*<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"*/}
                                  {/*     className="bi bi-power" viewBox="0 0 16 16">*/}
                                  {/*   <path d="M7.5 1v7h1V1h-1z" />*/}
                                  {/*   <path*/}
                                  {/*      d="M3 8.812a4.999 4.999 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812z" />*/}
                                  {/*</svg>*/}
-                                 <span>Log Out</span>
-                              </Link>
+                                 <span onClick={()=>onLogout()}>Log Out</span>
+                              </span>
                            </li>
                         </ul>
                      </div>
