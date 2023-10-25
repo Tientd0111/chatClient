@@ -1,33 +1,91 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import LayoutMain from '@/Layout/LayoutMain'
 import SideBarChat from '@/pages/chat/layout/SideBarChat.jsx'
 import MainChat from '@/pages/chat/layout/MainChat.jsx'
 import useConversationStore from '@/stores/useConversationStore.jsx'
+import useMessageStore from '@/stores/useMessageStore.jsx'
+import { useSocket } from '@/stores/useSocket.jsx'
 
 const Home = () => {
+   const [id,setId] = useState()
+   const [listMessage,setListMessage] = useState()
+   const msgRef = useRef()
 
-   const {getMyConversation,listConversation} = useConversationStore(state => ({
+   const idUser = JSON.parse(localStorage?.getItem("user"))._id
+   const {getMyConversation,listConversation,getConversationById,infoConversation} = useConversationStore(state => ({
       getMyConversation: state.getMyConversation,
-      listConversation: state.listConversation
+      listConversation: state.listConversation,
+      getConversationById: state.getMyConversationById,
+      infoConversation: state.infoConversation,
    }))
 
-   const [id,setId] = useState()
+   const {getListMessage} = useMessageStore(state => ({
+      getListMessage: state.getListMessage
+   }))
+
+   const {socket} = useSocket(state => ({
+      socket: state.socket
+   }))
+
+   async function getMessage(id){
+      await getListMessage(id).then(res => {
+         setListMessage(res?.message)
+      })
+   }
+   async function funcGetConversationById(id){
+      await getConversationById(id)
+   }
+
+   async function funcGetMyConversation(){
+      await getMyConversation(idUser)
+   }
+
+   useEffect(()=>{
+      funcGetMyConversation()
+   },[])
+
+   useEffect(()=>{
+      const addMessage = (msg) => {
+         setListMessage(prevMessages => [...prevMessages, msg])
+         funcGetMyConversation()
+         msgRef.current.value = ""
+      }
+      socket.on(`return-message`,addMessage)
+
+      return () => socket.off(`return-message`, addMessage);
+   },[])
+
+   const sendMessage = (data) => {
+      const dataChat = {
+         sender: idUser,
+         content: data,
+         conversation_id: id
+      }
+      socket.emit("send-message",dataChat)
+      // console.log(dataChat)
+   }
+
+
 
    useEffect(()=>{
       setId(listConversation?.[0]?._id)
    },[listConversation])
 
-   async function fetchData(){
-      await getMyConversation("6535d27eee0919d8f975b58a")
-   }
-
    useEffect(()=>{
-      fetchData()
-   },[])
+      if(id){
+         funcGetConversationById(id)
+         getMessage(id)
+      }
+   },[id])
+
+
 
    const chooseConversation = (id) => {
       setId(id)
+      getMessage(id)
+      funcGetConversationById(id)
    }
+
 
 
    return (
@@ -38,7 +96,7 @@ const Home = () => {
                idConversation={id}
                chooseConversation={chooseConversation}
             />
-            <MainChat idConversation={id}/>
+            <MainChat infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef} sendMessage={sendMessage}/>
          </div>
       </LayoutMain>
    )

@@ -1,12 +1,12 @@
 import React from 'react'
 
-const FooterChat = ({msgRef,sendMessage}) => {
+const FooterChat = ({msgRef,onSendMessage}) => {
 
    const onSend = (e) => {
       e.preventDefault()
       const message = msgRef.current?.value
       if(message) {
-         sendMessage(message)
+         onSendMessage(message)
       }
    }
 
