@@ -52,7 +52,11 @@ const Home = () => {
       }
       socket.on(`return-message`,addMessage)
 
-      return () => socket.off(`return-message`, addMessage);
+      socket.on("getOnlineUser", (data) =>{
+         console.log("x",data)
+      })
+
+      return () => socket.off();
    },[])
 
    const sendMessage = (data) => {
@@ -75,6 +79,7 @@ const Home = () => {
       if(id){
          funcGetConversationById(id)
          getMessage(id)
+         socket.emit("join",id)
       }
    },[id])
 
@@ -84,6 +89,7 @@ const Home = () => {
       setId(id)
       getMessage(id)
       funcGetConversationById(id)
+      socket.emit("join",id)
    }
 
 

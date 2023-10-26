@@ -14,7 +14,7 @@ const useUserStore = create(set => ({
          localStorage.setItem('key', response.accessToken)
          localStorage.setItem('user', JSON.stringify(response.user))
          // cookies.set('refreshToken', response.refreshToken, { path: '/' });
-         return {isAuth: true, user: response.user}
+         return {isAuth: true, user: response.user, access_token: response.accessToken}
       } catch (e) {
          message.error(e.response?.data.msg)
          set({loadingLogin: false})
@@ -23,5 +23,6 @@ const useUserStore = create(set => ({
    },
    loadingLogin: false,
    user: {},
+   access_token: {}
 }));
 export default useUserStore;
