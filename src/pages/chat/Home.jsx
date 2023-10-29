@@ -7,7 +7,6 @@ import useMessageStore from '@/stores/useMessageStore.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
 
 const Home = () => {
-   const [id,setId] = useState()
    const [listMessage,setListMessage] = useState()
    const msgRef = useRef()
 
@@ -19,8 +18,13 @@ const Home = () => {
       infoConversation: state.infoConversation,
    }))
 
-   const {getListMessage} = useMessageStore(state => ({
-      getListMessage: state.getListMessage
+   const [id,setId] = useState()
+   const [listImage,setListImage] = useState()
+
+
+   const {getListMessage,getListImage} = useMessageStore(state => ({
+      getListMessage: state.getListMessage,
+      getListImage: state.getListImage
    }))
 
    const {socket} = useSocket(state => ({
@@ -56,23 +60,34 @@ const Home = () => {
          console.log("x",data)
       })
 
+
       return () => socket.off();
    },[])
 
    const sendMessage = (data) => {
       const dataChat = {
          sender: idUser,
-         content: data,
-         conversation_id: id
+         content: data.content,
+         conversation_id: id,
+         message_image: data.message_image.files
       }
       socket.emit("send-message",dataChat)
       // console.log(dataChat)
    }
 
+   const onTyping = (e) => {
+      e.preventDefault()
+      socket.emit('typing',id)
+   }
 
 
    useEffect(()=>{
-      setId(listConversation?.[0]?._id)
+      if(!id){
+         setId(listConversation?.[0]?._id)
+         getListImage(id).then(res => {
+            setListImage(res?.list_image)
+         })
+      }
    },[listConversation])
 
    useEffect(()=>{
@@ -80,6 +95,9 @@ const Home = () => {
          funcGetConversationById(id)
          getMessage(id)
          socket.emit("join",id)
+         getListImage(id).then(res => {
+            setListImage(res?.list_image)
+         })
       }
    },[id])
 
@@ -90,8 +108,10 @@ const Home = () => {
       getMessage(id)
       funcGetConversationById(id)
       socket.emit("join",id)
+      getListImage(id).then(res => {
+         setListImage(res?.list_image)
+      })
    }
-
 
 
    return (
@@ -102,7 +122,7 @@ const Home = () => {
                idConversation={id}
                chooseConversation={chooseConversation}
             />
-            <MainChat infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef} sendMessage={sendMessage}/>
+            <MainChat listImage={listImage} onTyping={onTyping} infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef} sendMessage={sendMessage}/>
          </div>
       </LayoutMain>
    )

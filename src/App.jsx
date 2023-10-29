@@ -1,31 +1,56 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import {
+   Routes as ListRoute,
+   BrowserRouter,
+   Route,
+   Navigate,
+} from "react-router-dom";
 import { checkAuth } from './routes/checkAuth'
 import Home from '@/pages/chat/Home'
 import React, { useEffect, useState } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 import Login from '@/pages/user/Login.jsx'
 import PrivateRoute from '@/routes/privateRoute.jsx'
+import useUserStore from '@/stores/useUserStore.jsx'
+import Contact from '@/pages/contact/Contact.jsx'
+import path from '@/constants/path.jsx'
+// import { privateRoutes, routes } from '@/routes/index.js'
 
 function App() {
    const isAuthenticated = checkAuth()
    const {currentMode} = useStateContext()
 
-   console.log(isAuthenticated)
+   const token = localStorage.getItem("key")
+
+   const {getMyInfo} = useUserStore(state => ({
+      getMyInfo: state.getMyInfo,
+   }))
+
+   useEffect(()=>{
+      async function fetchData(){
+         await getMyInfo()
+      }
+      if(token){
+         fetchData()
+      }
+   },[])
+
+
+
    return (
       <div data-bs-theme={currentMode}>
          <div className={"tyn-body"}>
             <div className={"tyn-root"}>
                <div className="app">
                   <BrowserRouter>
-                     <Routes>
-                        <Route path="*" element={<PrivateRoute />}>
-                           <Route path={"chat"} element={<Home/>}/>
-                        </Route>
-                        <Route
-                           path="/login"
-                           element={isAuthenticated ? <Home /> : <Login />}
-                        />
-                     </Routes>
+                     <ListRoute>
+                        <Route element={<Login/>} path={path.LOGIN} />
+                     </ListRoute>
+                     <RequireAuth>
+                        <ListRoute>
+                           <Route element={<Home/>} path={path.CHAT} />
+                           <Route element={<Contact/>} path={path.CONTACT} />
+                        </ListRoute>
+                     </RequireAuth>
                   </BrowserRouter>
                </div>
             </div>
@@ -161,5 +186,11 @@ function App() {
 
    )
 }
-
+function RequireAuth({children}) {
+   const user = JSON.parse(localStorage.getItem('user'))
+   if(user?._id === undefined){
+      return <Navigate to={path.LOGIN}/>
+   }
+   return children
+}
 export default App

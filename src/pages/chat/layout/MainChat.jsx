@@ -7,7 +7,7 @@ import MessageChat from '@/components/chat/MessageChat.jsx'
 import useMessageStore from '@/stores/useMessageStore.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
 
-const MainChat = ({infoConversation,listMessage,msgRef,sendMessage}) => {
+const MainChat = ({infoConversation,listMessage,msgRef,sendMessage,onTyping,listImage}) => {
    const [showInfo,setShowInfo] = useState(true)
 
 
@@ -27,8 +27,8 @@ const MainChat = ({infoConversation,listMessage,msgRef,sendMessage}) => {
             infoConversation={infoConversation}
          />
          <MessageChat listMessage={listMessage}/>
-         <InfoChat showInfo={showInfo} infoConversation={infoConversation}/>
-         <FooterChat msgRef={msgRef} onSendMessage={onSendMessage}/>
+         <InfoChat showInfo={showInfo} infoConversation={infoConversation} listImage={listImage}/>
+         <FooterChat onTyping={onTyping} msgRef={msgRef} onSendMessage={onSendMessage}/>
       </div>
    )
 }

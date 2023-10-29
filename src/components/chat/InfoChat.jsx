@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Tabs } from 'antd'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
-const InfoChat = ({ showInfo ,infoConversation}) => {
+const InfoChat = ({ showInfo ,infoConversation,listImage}) => {
+   console.log("x",listImage)
    const id = JSON.parse(localStorage?.getItem("user"))._id
 
    const [tabAct,setTabAct] = useState("media")
@@ -131,84 +132,22 @@ const InfoChat = ({ showInfo ,infoConversation}) => {
                         id='chat-media-images'
                      >
                         <div className='row g-3'>
-                           <div className='col-4'>
-                              <a
-                                 href='../../../src/assets/images/gallery/chat/1.jpg'
-                                 className='glightbox tyn-thumb'
-                                 data-gallery='media-photo'
-                              >
-                                 <img
-                                    src='../../../src/assets/images/gallery/chat/thumb-1.jpg'
-                                    className='tyn-image'
-                                    alt=''
-                                 />
-                              </a>
-                           </div>
-                           <div className='col-4'>
-                              <a
-                                 href='../../../src/assets/images/gallery/chat/2.jpg'
-                                 className='glightbox tyn-thumb'
-                                 data-gallery='media-photo'
-                              >
-                                 <img
-                                    src='../../../src/assets/images/gallery/chat/thumb-2.jpg'
-                                    className='tyn-image'
-                                    alt=''
-                                 />
-                              </a>
-                           </div>
-                           <div className='col-4'>
-                              <a
-                                 href='../../../src/assets/images/gallery/chat/3.jpg'
-                                 className='glightbox tyn-thumb'
-                                 data-gallery='media-photo'
-                              >
-                                 <img
-                                    src='../../../src/assets/images/gallery/chat/thumb-3.jpg'
-                                    className='tyn-image'
-                                    alt=''
-                                 />
-                              </a>
-                           </div>
-                           <div className='col-4'>
-                              <a
-                                 href='../../../src/assets/images/gallery/chat/4.jpg'
-                                 className='glightbox tyn-thumb'
-                                 data-gallery='media-photo'
-                              >
-                                 <img
-                                    src='../../../src/assets/images/gallery/chat/thumb-4.jpg'
-                                    className='tyn-image'
-                                    alt=''
-                                 />
-                              </a>
-                           </div>
-                           <div className='col-4'>
-                              <a
-                                 href='../../../src/assets/images/gallery/chat/5.jpg'
-                                 className='glightbox tyn-thumb'
-                                 data-gallery='media-photo'
-                              >
-                                 <img
-                                    src='../../../src/assets/images/gallery/chat/thumb-5.jpg'
-                                    className='tyn-image'
-                                    alt=''
-                                 />
-                              </a>
-                           </div>
-                           <div className='col-4'>
-                              <a
-                                 href='../../../src/assets/images/gallery/chat/6.jpg'
-                                 className='glightbox tyn-thumb'
-                                 data-gallery='media-photo'
-                              >
-                                 <img
-                                    src='../../../src/assets/images/gallery/chat/thumb-6.jpg'
-                                    className='tyn-image'
-                                    alt=''
-                                 />
-                              </a>
-                           </div>
+                           {listImage?.map((item)=>(
+                              item.map((it,index)=>(
+                                 <div key={index} className='col-4'>
+                                 <span
+                                    className='glightbox tyn-thumb'
+                                    data-gallery='media-photo'
+                                 >
+                                    <img
+                                       src={environmentConfig.BASE_URI + it}
+                                       className='tyn-image'
+                                       alt=''
+                                    />
+                                 </span>
+                                 </div>
+                              ))
+                           ))}
                         </div>
                      </div>
                   </Tabs.TabPane>

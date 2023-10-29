@@ -13,5 +13,14 @@ const useMessageStore = create(set => ({
    },
    loadingGetListMessage: false,
 
+   getListImage: async (params) => {
+      set({loadingGetListImage: true})
+      try{
+         return await callService(apis.getListImage.uri + params, "GET", {}, true)
+      }catch (e) {
+         set({loadingGetListImage: false})
+      }
+   },
+   loadingGetListImage: false,
 }));
 export default useMessageStore;

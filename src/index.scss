@@ -18,8 +18,33 @@ body {
    //font-size: 1.6rem;
    height: 100%;
 
+   &:active::-webkit-scrollbar-thumb,
+   &:focus::-webkit-scrollbar-thumb,
+   &:hover::-webkit-scrollbar-thumb {
+      visibility: visible;
+   }
+   &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      visibility: hidden;
+   }
+
    &::-webkit-scrollbar {
-      display: none;
+      width: 4px;
+      height: 4px;
+   }
+   &:active::-webkit-scrollbar-thumb,
+   &:focus::-webkit-scrollbar-thumb,
+   &:hover::-webkit-scrollbar-thumb {
+      visibility: visible;
+   }
+   &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      visibility: hidden;
+   }
+
+   &::-webkit-scrollbar {
+      width: 6px;
+      height: 4px;
    }
 }
 

@@ -23,6 +23,18 @@ const useUserStore = create(set => ({
    },
    loadingLogin: false,
    user: {},
-   access_token: {}
+   access_token: {},
+
+   getMyInfo: async () => {
+      set({loadingGetMyInfo: true})
+      try {
+         const res = await callService(apis.myInfo.uri, 'GET', {},true)
+         set({info: res.user,loadingGetMyInfo: false})
+      }catch (e) {
+         set({loadingGetMyInfo: false})
+      }
+   },
+   loadingGetMyInfo: false,
+   info:{},
 }));
 export default useUserStore;

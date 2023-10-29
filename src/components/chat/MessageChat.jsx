@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useMessageStore from '@/stores/useMessageStore.jsx'
+import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const MessageChat = ({listMessage}) => {
    const id = JSON.parse(localStorage?.getItem("user"))._id
@@ -11,9 +12,25 @@ const MessageChat = ({listMessage}) => {
                <div key={item?._id} className={`tyn-reply-item  ${item?.sender?._id === id ? "outgoing":"incoming"}`}>
                   <div className="tyn-reply-group">
                      <div className="tyn-reply-bubble">
-                        <div className="tyn-reply-text">
-                           {item?.content}
-                        </div>
+                        {item?.content &&
+                           <div className="tyn-reply-text">
+                              {item?.content}
+                           </div>
+                        }
+                        {item?.message_image &&
+                           <div className="tyn-reply-media">
+                              {item?.message_image.map((item,index)=>(
+                                 <span
+                                    key={index}
+                                    className="glightbox tyn-thumb"
+                                    data-gallery="media-photo"
+                                 >
+                                    <img src={environmentConfig.BASE_URI + item} className="tyn-image" alt="" />
+                                 </span>
+                              ))}
+                           </div>
+
+                        }
                         {/* tyn-reply-text */}
                         <ul className="tyn-reply-tools">
                            <li>
