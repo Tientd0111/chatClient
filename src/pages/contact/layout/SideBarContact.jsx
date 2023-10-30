@@ -537,4 +537,4 @@ const SideBarContact = ({listFriend,id,chooseFriend}) => {
    )
 }
 
-export default SideBarContact
+export default React.memo(SideBarContact)

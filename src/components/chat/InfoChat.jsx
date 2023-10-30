@@ -132,22 +132,22 @@ const InfoChat = ({ showInfo ,infoConversation,listImage}) => {
                         id='chat-media-images'
                      >
                         <div className='row g-3'>
-                           {listImage?.map((item)=>(
-                              item.map((it,index)=>(
-                                 <div key={index} className='col-4'>
-                                 <span
-                                    className='glightbox tyn-thumb'
-                                    data-gallery='media-photo'
-                                 >
-                                    <img
-                                       src={environmentConfig.BASE_URI + it}
-                                       className='tyn-image'
-                                       alt=''
-                                    />
-                                 </span>
-                                 </div>
-                              ))
-                           ))}
+                           {/*{listImage?.map((item)=>(*/}
+                           {/*   item.map((it,index)=>(*/}
+                           {/*      <div key={index} className='col-4'>*/}
+                           {/*      <span*/}
+                           {/*         className='glightbox tyn-thumb'*/}
+                           {/*         data-gallery='media-photo'*/}
+                           {/*      >*/}
+                           {/*         <img*/}
+                           {/*            src={environmentConfig.BASE_URI + it}*/}
+                           {/*            className='tyn-image'*/}
+                           {/*            alt=''*/}
+                           {/*         />*/}
+                           {/*      </span>*/}
+                           {/*      </div>*/}
+                           {/*   ))*/}
+                           {/*))}*/}
                         </div>
                      </div>
                   </Tabs.TabPane>
@@ -592,4 +592,4 @@ const InfoChat = ({ showInfo ,infoConversation,listImage}) => {
    )
 }
 
-export default InfoChat
+export default React.memo(InfoChat)

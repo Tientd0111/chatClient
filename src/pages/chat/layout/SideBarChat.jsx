@@ -548,4 +548,4 @@ const SideBarChat = ({listConversation,idConversation,chooseConversation}) => {
    )
 }
 
-export default SideBarChat
+export default React.memo(SideBarChat)

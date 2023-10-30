@@ -33,4 +33,4 @@ const MainChat = ({infoConversation,listMessage,msgRef,sendMessage,onTyping,list
    )
 }
 
-export default MainChat
+export default React.memo(MainChat)
