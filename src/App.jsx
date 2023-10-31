@@ -1,22 +1,15 @@
-import {
-   Routes as ListRoute,
-   BrowserRouter,
-   Route,
-   Navigate,
-} from "react-router-dom";
-import { checkAuth } from './routes/checkAuth'
+import { BrowserRouter, Navigate, Route, Routes as ListRoute } from 'react-router-dom'
 import Home from '@/pages/chat/Home'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 import Login from '@/pages/user/Login.jsx'
-import PrivateRoute from '@/routes/privateRoute.jsx'
 import useUserStore from '@/stores/useUserStore.jsx'
 import Contact from '@/pages/contact/Contact.jsx'
 import path from '@/constants/path.jsx'
+
 // import { privateRoutes, routes } from '@/routes/index.js'
 
 function App() {
-   const isAuthenticated = checkAuth()
    const {currentMode} = useStateContext()
 
    const token = localStorage.getItem("key")

@@ -39,7 +39,6 @@ const Home = () => {
    async function funcGetConversationById(id){
       await getConversationById(id)
    }
-
    async function funcGetMyConversation(){
       await getMyConversation(idUser)
    }
@@ -69,10 +68,10 @@ const Home = () => {
          sender: idUser,
          content: data.content,
          conversation_id: id,
-         message_image: data.message_image.files
+         message_image: data?.message_image?.files?.length > 0 ? data.message_image.files: []
       }
       socket.emit("send-message",dataChat)
-      // console.log(dataChat)
+      // console.log(data)
    }
 
    const onTyping = (e) => {
@@ -81,26 +80,21 @@ const Home = () => {
    }
 
 
-   useEffect(()=>{
-      if(!id){
+   useEffect(() => {
+      if (!id) {
          setId(listConversation?.[0]?._id)
-         getListImage(id).then(res => {
+         getListImage(listConversation?.[0]?._id).then(res => {
             setListImage(res?.list_image)
          })
-      }
-   },[listConversation])
-
-   useEffect(()=>{
-      if(id){
+      } else {
          funcGetConversationById(id)
          getMessage(id)
-         socket.emit("join",id)
+         socket.emit("join", id)
          getListImage(id).then(res => {
             setListImage(res?.list_image)
          })
       }
-   },[id])
-
+   }, [id, listConversation])
 
 
    const chooseConversation = (id) => {

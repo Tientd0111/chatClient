@@ -217,4 +217,4 @@ const HeaderChat = ({showInfo,onDisplayInfo,infoConversation}) => {
    )
 }
 
-export default HeaderChat
+export default React.memo(HeaderChat)

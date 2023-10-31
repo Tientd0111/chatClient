@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import useMessageStore from '@/stores/useMessageStore.jsx'
+import React from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const MessageChat = ({listMessage}) => {
@@ -8,8 +7,8 @@ const MessageChat = ({listMessage}) => {
    return (
       <div className="tyn-chat-body js-scroll-to-end" id="tynChatBody">
          <div className="tyn-reply" style={{flexDirection:'column'}}>
-            {listMessage?.map((item)=>(
-               <div key={item?._id} className={`tyn-reply-item  ${item?.sender?._id === id ? "outgoing":"incoming"}`}>
+            {listMessage?.map((item,index)=>(
+               <div key={index} className={`tyn-reply-item  ${item?.sender?._id === id ? "outgoing":"incoming"}`}>
                   <div className="tyn-reply-group">
                      <div className="tyn-reply-bubble">
                         {item?.content &&
@@ -17,7 +16,7 @@ const MessageChat = ({listMessage}) => {
                               {item?.content}
                            </div>
                         }
-                        {item?.message_image &&
+                        {item?.message_image?.length > 0 &&
                            <div className="tyn-reply-media">
                               {item?.message_image.map((item,index)=>(
                                  <span
@@ -129,4 +128,4 @@ const MessageChat = ({listMessage}) => {
    )
 }
 
-export default MessageChat
+export default React.memo(MessageChat)

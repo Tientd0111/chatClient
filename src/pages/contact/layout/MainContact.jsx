@@ -583,4 +583,4 @@ const MainContact = ({info}) => {
    )
 }
 
-export default MainContact
+export default React.memo(MainContact)
