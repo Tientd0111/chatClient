@@ -9,7 +9,7 @@ export async function callService(uri, method, bodyParameters, hasToken) {
       if (hasToken) {
          authen_token = localStorage.getItem('key');
       }
-      let headers = !hasToken ? { 'Content-Type': 'application/json;charset=UTF-8' } : { 'Content-Type': 'application/json;charset=UTF-8', Authorization: `Bearer ${authen_token}` }
+      let headers = !hasToken ? { 'Content-Type': 'application/json;charset=UTF-8',"ngrok-skip-browser-warning":true } : { 'Content-Type': 'application/json;charset=UTF-8', Authorization: `Bearer ${authen_token}`,"ngrok-skip-browser-warning":true }
       let configAxios
       configAxios = {
          url,
