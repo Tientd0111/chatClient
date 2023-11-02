@@ -5,10 +5,12 @@ import MainChat from '@/pages/chat/layout/MainChat.jsx'
 import useConversationStore from '@/stores/useConversationStore.jsx'
 import useMessageStore from '@/stores/useMessageStore.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
+import ModalCallVideo from '@/components/modal/ModalCallVideo.jsx'
 
 const Home = () => {
    const [listMessage,setListMessage] = useState()
    const msgRef = useRef()
+   const call = useRef()
 
    const idUser = JSON.parse(localStorage?.getItem("user"))._id
    const {getMyConversation,listConversation,getConversationById,infoConversation} = useConversationStore(state => ({
@@ -107,6 +109,14 @@ const Home = () => {
       })
    }
 
+   const callVideo = (data) => {
+      call?.current?.open()
+   }
+
+   const endCall = (data) => {
+      call?.current?.close()
+   }
+
 
    return (
       <LayoutMain>
@@ -116,8 +126,9 @@ const Home = () => {
                idConversation={id}
                chooseConversation={chooseConversation}
             />
-            <MainChat listImage={listImage} onTyping={onTyping} infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef} sendMessage={sendMessage}/>
+            <MainChat endCall={endCall} callVideo={callVideo} listImage={listImage} onTyping={onTyping} infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef} sendMessage={sendMessage}/>
          </div>
+         <ModalCallVideo ref={call} endCall={endCall}/>
       </LayoutMain>
    )
 }

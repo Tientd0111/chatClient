@@ -1,7 +1,7 @@
 import React from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
-const HeaderChat = ({showInfo,onDisplayInfo,infoConversation}) => {
+const HeaderChat = ({showInfo,onDisplayInfo,infoConversation,callVideo}) => {
    const id = JSON.parse(localStorage?.getItem("user"))._id
 
    return (
@@ -79,6 +79,7 @@ const HeaderChat = ({showInfo,onDisplayInfo,infoConversation}) => {
                      className="btn btn-icon btn-light"
                      data-bs-toggle="modal"
                      data-bs-target="#videoCallingScreen"
+                     onClick={callVideo}
                   >
                      {/* camera-video-fill */}
                      <svg
