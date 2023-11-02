@@ -22,6 +22,7 @@ const ModalCallVideo= forwardRef((props, ref) => {
          footer={null}
          title={""}
          open={show}
+         className={"call"}
          closable={false}
          width={"320px"}
       >

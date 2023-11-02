@@ -3,7 +3,13 @@ import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const HeaderChat = ({showInfo,onDisplayInfo,infoConversation,callVideo}) => {
    const id = JSON.parse(localStorage?.getItem("user"))._id
-
+   const handleCall = () => {
+      const data = {
+         arrive: infoConversation?.user_1?._id === id ? infoConversation?.user_2?._id : infoConversation?.user_1?._id,
+         call_from: id
+      }
+      callVideo(data)
+   }
    return (
       <>
          <div className="tyn-chat-head">
@@ -79,7 +85,7 @@ const HeaderChat = ({showInfo,onDisplayInfo,infoConversation,callVideo}) => {
                      className="btn btn-icon btn-light"
                      data-bs-toggle="modal"
                      data-bs-target="#videoCallingScreen"
-                     onClick={callVideo}
+                     onClick={handleCall}
                   >
                      {/* camera-video-fill */}
                      <svg

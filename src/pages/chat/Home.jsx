@@ -6,11 +6,17 @@ import useConversationStore from '@/stores/useConversationStore.jsx'
 import useMessageStore from '@/stores/useMessageStore.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
 import ModalCallVideo from '@/components/modal/ModalCallVideo.jsx'
+import { usePeerContext } from '@/contexts/Peer.jsx'
+import ModalncomingCall from '@/components/modal/ModalncomingCall'
 
 const Home = () => {
    const [listMessage,setListMessage] = useState()
    const msgRef = useRef()
    const call = useRef()
+   const incomingCall = useRef()
+   const {createOffer,createAnswere,setRemoteAns} = usePeerContext()
+
+   const [callForm,setCallForm] = useState()
 
    const idUser = JSON.parse(localStorage?.getItem("user"))._id
    const {getMyConversation,listConversation,getConversationById,infoConversation} = useConversationStore(state => ({
@@ -61,7 +67,15 @@ const Home = () => {
          console.log("x",data)
       })
 
+      socket.on("incoming-call", (data) => {
+         setCallForm(data)
+         incomingCall?.current?.open()
+      })
 
+      socket.on("call-accepted",async (data) => {
+         const {ans} = data
+         await setRemoteAns(ans)
+      })
       return () => socket.off();
    },[])
 
@@ -109,13 +123,26 @@ const Home = () => {
       })
    }
 
-   const callVideo = (data) => {
+   const callVideo = async (data) => {
       call?.current?.open()
+      const offer = await createOffer()
+      const body = {
+         arrive: data.arrive,
+         call_from: data.call_from,
+         offer: offer
+      }
+      socket.emit("call-video",body)
+   }
+
+   const acceptCall = async (data) => {
+      const ans = await createAnswere(callForm?.offer)
+      socket.emit("call-accepted",{call_form: callForm?.from,ans: ans})
    }
 
    const endCall = (data) => {
       call?.current?.close()
    }
+
 
 
    return (
@@ -129,6 +156,7 @@ const Home = () => {
             <MainChat endCall={endCall} callVideo={callVideo} listImage={listImage} onTyping={onTyping} infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef} sendMessage={sendMessage}/>
          </div>
          <ModalCallVideo ref={call} endCall={endCall}/>
+         <ModalncomingCall ref={incomingCall} acceptCall={acceptCall}/>
       </LayoutMain>
    )
 }

@@ -64,3 +64,8 @@ a {
 .ant-tabs-nav::before{
    display: none;
 }
+.call{
+   .ant-modal-content{
+      padding: 0;
+   }
+}
