@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 const PeerContext = createContext();
 
 export const PeerProvider = ({ children }) => {
+   const [remoteStream,setRemoteStream] = useState()
    const peer = useMemo(() => new RTCPeerConnection({
       iceServers: [
          {
@@ -28,9 +29,35 @@ export const PeerProvider = ({ children }) => {
    }
 
    const setRemoteAns = async (ans) => {
-      await peer.setRemoteDescription(ans)
+      if (peer.connectionState === 'connected') {
+         peer.setRemoteDescription(ans);
+      } else {
+         peer.addEventListener('connectionstatechange', event => {
+            if (peer.connectionState === 'connected') {
+               peer.setRemoteDescription(ans);
+            }
+         });
+      }
+      // await peer.setRemoteDescription(ans)
    }
 
+   const sendStream = async (stream) => {
+      const tracks = stream.getTracks()
+      for (const track of tracks){
+         peer.addTrack(track,stream)
+      }
+   }
+   const handleTrackEvent = useCallback((ev)=>{
+      const streams = ev.streams
+      setRemoteStream(streams[0])
+   },[])
+
+   useEffect(()=>{
+      peer.addEventListener("track", handleTrackEvent)
+      return () => {
+         peer.removeEventListener("track",handleTrackEvent)
+      }
+   },[peer,handleTrackEvent])
    return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       <PeerContext.Provider
@@ -38,7 +65,9 @@ export const PeerProvider = ({ children }) => {
             peer,
             createOffer,
             createAnswere,
-            setRemoteAns
+            setRemoteAns,
+            sendStream,
+            remoteStream
          }}
       >
          {children}

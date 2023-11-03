@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import LayoutMain from '@/Layout/LayoutMain'
 import SideBarChat from '@/pages/chat/layout/SideBarChat.jsx'
 import MainChat from '@/pages/chat/layout/MainChat.jsx'
@@ -8,27 +8,30 @@ import { useSocket } from '@/stores/useSocket.jsx'
 import ModalCallVideo from '@/components/modal/ModalCallVideo.jsx'
 import { usePeerContext } from '@/contexts/Peer.jsx'
 import ModalncomingCall from '@/components/modal/ModalncomingCall'
+import ModalOnGoingCall from '@/components/modal/ModalOnGoingCall.jsx'
 
 const Home = () => {
-   const [listMessage,setListMessage] = useState()
    const msgRef = useRef()
    const call = useRef()
    const incomingCall = useRef()
-   const {createOffer,createAnswere,setRemoteAns} = usePeerContext()
+   const ongoingCall = useRef()
+   const {peer,createOffer,createAnswere,setRemoteAns,sendStream,remoteStream} = usePeerContext()
 
-   const [callForm,setCallForm] = useState()
+   const [listMessage,setListMessage] = useState()
+   const [callFrom,setCallFrom] = useState()
+   const [id,setId] = useState()
+   const [listImage,setListImage] = useState()
+   const [myStream,setMyStream] = useState()
+   const [infoCall,setInfoCall] = useState()
 
    const idUser = JSON.parse(localStorage?.getItem("user"))._id
+
    const {getMyConversation,listConversation,getConversationById,infoConversation} = useConversationStore(state => ({
       getMyConversation: state.getMyConversation,
       listConversation: state.listConversation,
       getConversationById: state.getMyConversationById,
       infoConversation: state.infoConversation,
    }))
-
-   const [id,setId] = useState()
-   const [listImage,setListImage] = useState()
-
 
    const {getListMessage,getListImage} = useMessageStore(state => ({
       getListMessage: state.getListMessage,
@@ -68,13 +71,19 @@ const Home = () => {
       })
 
       socket.on("incoming-call", (data) => {
-         setCallForm(data)
+         setCallFrom(data)
          incomingCall?.current?.open()
       })
 
-      socket.on("call-accepted",async (data) => {
+      socket.on("accepted",async (data) => {
          const {ans} = data
          await setRemoteAns(ans)
+         // sendStream(myStream)
+         if(ans){
+            call?.current?.close()
+            incomingCall?.current?.close()
+            ongoingCall?.current?.open()
+         }
       })
       return () => socket.off();
    },[])
@@ -126,6 +135,7 @@ const Home = () => {
    const callVideo = async (data) => {
       call?.current?.open()
       const offer = await createOffer()
+      setInfoCall(data)
       const body = {
          arrive: data.arrive,
          call_from: data.call_from,
@@ -135,15 +145,40 @@ const Home = () => {
    }
 
    const acceptCall = async (data) => {
-      const ans = await createAnswere(callForm?.offer)
-      socket.emit("call-accepted",{call_form: callForm?.from,ans: ans})
+      const ans = await createAnswere(callFrom?.offer)
+      socket.emit("call-accepted",{call_from: callFrom?.from,ans: ans})
    }
 
    const endCall = (data) => {
       call?.current?.close()
    }
+   const handleNegotiation = useCallback(()=>{
+      const localOffer = peer.localDescription
+      const body = {
+         arrive: infoCall.arrive,
+         call_from: infoCall.call_from,
+         offer: localOffer
+      }
+      socket.emit("call-video",body)
+   },[])
+   useEffect(()=>{
+      peer.addEventListener("negotiationneeded",handleNegotiation)
+      return () => {
+         peer.removeEventListener("negotiationneeded",handleNegotiation)
+      }
+   },[])
+   const getUserMediaStream = useCallback(async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+         audio: true,
+         video: true
+      })
+      console.log("video",stream)
+      setMyStream(stream)
+   },[])
 
-
+   useEffect(()=>{
+      getUserMediaStream()
+   },[getUserMediaStream])
 
    return (
       <LayoutMain>
@@ -157,6 +192,7 @@ const Home = () => {
          </div>
          <ModalCallVideo ref={call} endCall={endCall}/>
          <ModalncomingCall ref={incomingCall} acceptCall={acceptCall}/>
+         <ModalOnGoingCall ref={ongoingCall} myStream={myStream}/>
       </LayoutMain>
    )
 }

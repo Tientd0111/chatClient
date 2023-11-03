@@ -1,8 +1,9 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Modal } from 'antd'
 import path from '@/constants/path.jsx'
+import ReactPlayer from 'react-player'
 
-const ModalCallVideo= forwardRef((props, ref) => {
+const ModalOnGoingCall = forwardRef((props, ref) => {
    const [show, setShow] = useState(false);
    const cancel = () => {
       setShow(false)
@@ -14,7 +15,7 @@ const ModalCallVideo= forwardRef((props, ref) => {
       }
    }));
 
-   const {endCall} = props
+   const {myStream} = props
 
 
    return (
@@ -26,7 +27,7 @@ const ModalCallVideo= forwardRef((props, ref) => {
          closable={false}
          width={"320px"}
       >
-         <div className="modal-dialog modal-dialog-centered modal-sm my-0">
+         <div className="modal-dialog modal-dialog-centered modal-sm">
             <div className="modal-content border-0">
                <div className="tyn-chat-call tyn-chat-call-video">
                   <div className="tyn-chat-call-stack">
@@ -34,21 +35,27 @@ const ModalCallVideo= forwardRef((props, ref) => {
                         <img src="../../../src/assets/images/v-cover/1.jpg" alt="" />
                      </div>
                   </div>
+                  {/* .tyn-chat-call-stack */}
                   <div className="tyn-chat-call-stack on-dark">
-                     <div className="tyn-media-group tyn-media-vr tyn-media-center mt-auto">
-                        <div className="tyn-media tyn-size-xl tyn-circle border border-2 border-white">
-                           <img src="../../../src/assets/images/v-cover/2.jpg" alt="" />
-                        </div>
-                        <div className="tyn-media-col">
+                     <div className="tyn-media-group p-4">
+                        <div className="tyn-media-col align-self-start pt-3">
                            <div className="tyn-media-row has-dot-sap">
-                              <span className="meta">Calling ...</span>
+                              <span className="meta">Talking With ...</span>
                            </div>
                            <div className="tyn-media-row">
                               <h6 className="name">Konstantin Frank</h6>
                            </div>
+                           <div className="tyn-media-row has-dot-sap">
+                              <span className="content">02:09 min</span>
+                           </div>
+                        </div>
+                        <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border border-2 border-dark">
+                           {/*<img src="../../../src/assets/images/v-cover/2.jpg" alt="" />*/}
+                           <ReactPlayer url={myStream} playing={true} width={96} height={125}/>
                         </div>
                      </div>
-                     <ul className="tyn-list-inline gap gap-3 mx-auto py-4 justify-content-center">
+                     {/* .tyn-media-group */}
+                     <ul className="tyn-list-inline gap gap-3 mx-auto py-4 justify-content-center  mt-auto">
                         <li>
                            <button className="btn btn-icon btn-pill btn-light">
                               {/* person-plus-fill */}
@@ -69,7 +76,11 @@ const ModalCallVideo= forwardRef((props, ref) => {
                            </button>
                         </li>
                         <li>
-                           <button className="btn btn-icon btn-pill btn-light">
+                           <button
+                              className="btn btn-icon btn-pill btn-light"
+                              data-bs-toggle="modal"
+                              data-bs-target="#callingScreen"
+                           >
                               {/* camera-video-fill */}
                               <svg
                                  xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +114,10 @@ const ModalCallVideo= forwardRef((props, ref) => {
                            </button>
                         </li>
                         <li>
-                           <button className="btn btn-icon btn-pill btn-danger" onClick={endCall}>
+                           <button
+                              className="btn btn-icon btn-pill btn-danger"
+                              data-bs-dismiss="modal"
+                           >
                               {/* telephone-x-fill */}
                               <svg
                                  xmlns="http://www.w3.org/2000/svg"
@@ -121,12 +135,16 @@ const ModalCallVideo= forwardRef((props, ref) => {
                            </button>
                         </li>
                      </ul>
+                     {/* .tyn-list-inline */}
                   </div>
+                  {/* .tyn-chat-call-stack */}
                </div>
+               {/* .tyn-chat-call */}
             </div>
+            {/* .modal-content */}
          </div>
       </Modal>
    );
 });
 
-export default ModalCallVideo;
+export default ModalOnGoingCall;
