@@ -8,7 +8,7 @@ import useMessageStore from '@/stores/useMessageStore.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
 
 const MainChat = ({callVideo,infoConversation,listMessage,msgRef,sendMessage,onTyping,listImage}) => {
-   const [showInfo,setShowInfo] = useState(true)
+   const [showInfo,setShowInfo] = useState(false)
 
 
    const displayInfo = (status) => {

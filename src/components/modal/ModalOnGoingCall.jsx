@@ -17,7 +17,6 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
 
    const {myStream} = props
 
-
    return (
       <Modal
          footer={null}
