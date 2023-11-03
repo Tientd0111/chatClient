@@ -25,13 +25,16 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
          className={"call"}
          closable={false}
          width={"320px"}
+         transitionName=""
+         maskTransitionName=""
       >
          <div className="modal-dialog modal-dialog-centered modal-sm">
             <div className="modal-content border-0">
                <div className="tyn-chat-call tyn-chat-call-video">
                   <div className="tyn-chat-call-stack">
                      <div className="tyn-chat-call-cover">
-                        <img src="../../../src/assets/images/v-cover/1.jpg" alt="" />
+                        {/*<img src="../../../src/assets/images/v-cover/1.jpg" alt="" />*/}
+                        <ReactPlayer  url={myStream} playing={true} width={320} height={520}/>
                      </div>
                   </div>
                   {/* .tyn-chat-call-stack */}
@@ -48,9 +51,9 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                               <span className="content">02:09 min</span>
                            </div>
                         </div>
-                        <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border border-2 border-dark">
+                        <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border-dark">
                            {/*<img src="../../../src/assets/images/v-cover/2.jpg" alt="" />*/}
-                           <ReactPlayer url={myStream} playing={true} width={96} height={125}/>
+                           <ReactPlayer  url={myStream} playing={true} width={96} height={125}/>
                         </div>
                      </div>
                      {/* .tyn-media-group */}

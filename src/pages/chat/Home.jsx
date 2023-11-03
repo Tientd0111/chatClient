@@ -78,7 +78,7 @@ const Home = () => {
       socket.on("accepted",async (data) => {
          const {ans} = data
          await setRemoteAns(ans)
-         // sendStream(myStream)
+         sendStream(myStream)
          if(ans){
             call?.current?.close()
             incomingCall?.current?.close()
@@ -167,6 +167,7 @@ const Home = () => {
          peer.removeEventListener("negotiationneeded",handleNegotiation)
       }
    },[])
+
    const getUserMediaStream = useCallback(async () => {
       const stream = await navigator.mediaDevices.getUserMedia({
          audio: true,

@@ -42,6 +42,7 @@ export const PeerProvider = ({ children }) => {
    }
 
    const sendStream = async (stream) => {
+      console.log(stream)
       const tracks = stream.getTracks()
       for (const track of tracks){
          peer.addTrack(track,stream)

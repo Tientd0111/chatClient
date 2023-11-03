@@ -25,6 +25,8 @@ const ModalIncomingCall = forwardRef((props, ref) => {
          className={"call"}
          closable={false}
          width={"320px"}
+         transitionName=""
+         maskTransitionName=""
       >
          <div className="modal-dialog modal-dialog-centered modal-sm my-0">
             <div className="modal-content border-0">
