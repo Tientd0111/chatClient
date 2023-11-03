@@ -21,7 +21,7 @@ const Home = () => {
    const [callFrom,setCallFrom] = useState()
    const [id,setId] = useState()
    const [listImage,setListImage] = useState()
-   const [myStream,setMyStream] = useState()
+   const [myStream,setMyStream] = useState(null)
    const [infoCall,setInfoCall] = useState()
 
    const idUser = JSON.parse(localStorage?.getItem("user"))._id
@@ -78,7 +78,8 @@ const Home = () => {
       socket.on("accepted",async (data) => {
          const {ans} = data
          await setRemoteAns(ans)
-         sendStream(myStream)
+         await getUserMediaStream()
+         // sendStream(myStream)
          if(ans){
             call?.current?.close()
             incomingCall?.current?.close()
@@ -87,7 +88,6 @@ const Home = () => {
       })
       return () => socket.off();
    },[])
-
    const sendMessage = (data) => {
       const dataChat = {
          sender: idUser,
@@ -152,34 +152,38 @@ const Home = () => {
    const endCall = (data) => {
       call?.current?.close()
    }
-   const handleNegotiation = useCallback(()=>{
-      const localOffer = peer.localDescription
-      const body = {
-         arrive: infoCall.arrive,
-         call_from: infoCall.call_from,
-         offer: localOffer
-      }
-      socket.emit("call-video",body)
-   },[])
-   useEffect(()=>{
-      peer.addEventListener("negotiationneeded",handleNegotiation)
-      return () => {
-         peer.removeEventListener("negotiationneeded",handleNegotiation)
-      }
-   },[])
+   // const handleNegotiation = useCallback(()=>{
+   //    console.log("nsadasdsadkasd")
+   //    // const localOffer = peer.localDescription
+   //    // const body = {
+   //    //    arrive: infoCall.arrive,
+   //    //    call_from: infoCall.call_from,
+   //    //    offer: localOffer
+   //    // }
+   //    // socket.emit("call-video",body)
+   // },[])
+   // useEffect(()=>{
+   //    peer.addEventListener("negotiationneeded",handleNegotiation)
+   //    return () => {
+   //       peer.removeEventListener("negotiationneeded",handleNegotiation)
+   //    }
+   // },[])
 
+   // console.log("peer",peer.addEventListener("track", ))
    const getUserMediaStream = useCallback(async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({
-         audio: true,
-         video: true
-      })
-      console.log("video",stream)
-      setMyStream(stream)
+      try {
+         const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true
+         })
+         // console.log(stream)
+         sendStream(stream)
+         setMyStream(stream)
+      } catch (error) {
+         console.error(error)
+      }
    },[])
 
-   useEffect(()=>{
-      getUserMediaStream()
-   },[getUserMediaStream])
 
    return (
       <LayoutMain>

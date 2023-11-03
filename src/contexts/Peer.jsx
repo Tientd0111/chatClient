@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 const PeerContext = createContext();
 
 export const PeerProvider = ({ children }) => {
-   const [remoteStream,setRemoteStream] = useState()
+   const [remoteStream,setRemoteStream] = useState(null)
    const peer = useMemo(() => new RTCPeerConnection({
       iceServers: [
          {
@@ -42,24 +42,26 @@ export const PeerProvider = ({ children }) => {
    }
 
    const sendStream = async (stream) => {
-      console.log(stream)
+      console.log("cccccccc",stream)
       const tracks = stream.getTracks()
       for (const track of tracks){
          peer.addTrack(track,stream)
       }
    }
-   const handleTrackEvent = useCallback((ev)=>{
-      console.log("ev",ev)
-      const streams = ev.streams
+   const handleTrackEvent = useCallback(async (ev)=>{
+      const streams = await ev.streams
       setRemoteStream(streams[0])
    },[])
 
+   console.log("remote",remoteStream)
    useEffect(()=>{
       peer.addEventListener("track", handleTrackEvent)
       return () => {
          peer.removeEventListener("track",handleTrackEvent)
       }
-   },[peer,handleTrackEvent])
+   },[handleTrackEvent,peer])
+
+
    return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       <PeerContext.Provider

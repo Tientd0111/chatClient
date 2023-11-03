@@ -34,7 +34,7 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                   <div className="tyn-chat-call-stack">
                      <div className="tyn-chat-call-cover">
                         {/*<img src="../../../src/assets/images/v-cover/1.jpg" alt="" />*/}
-                        <ReactPlayer  url={myStream} playing={true} width={320} height={520}/>
+                        <ReactPlayer url={remoteStream} playing={true} width={320} height={520} muted/>
                      </div>
                   </div>
                   {/* .tyn-chat-call-stack */}
@@ -53,7 +53,8 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                         </div>
                         <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border-dark">
                            {/*<img src="../../../src/assets/images/v-cover/2.jpg" alt="" />*/}
-                           <ReactPlayer  url={remoteStream} playing={true} width={96} height={125}/>
+                           <ReactPlayer url={myStream} playing={true} width={96} height={125} muted/>
+
                         </div>
                      </div>
                      {/* .tyn-media-group */}
