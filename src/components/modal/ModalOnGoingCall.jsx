@@ -15,7 +15,7 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
       }
    }));
 
-   const {myStream} = props
+   const {myStream,remoteStream} = props
 
    return (
       <Modal
@@ -53,7 +53,7 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                         </div>
                         <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border-dark">
                            {/*<img src="../../../src/assets/images/v-cover/2.jpg" alt="" />*/}
-                           <ReactPlayer  url={myStream} playing={true} width={96} height={125}/>
+                           <ReactPlayer  url={remoteStream} playing={true} width={96} height={125}/>
                         </div>
                      </div>
                      {/* .tyn-media-group */}

@@ -16,7 +16,7 @@ const Home = () => {
    const incomingCall = useRef()
    const ongoingCall = useRef()
    const {peer,createOffer,createAnswere,setRemoteAns,sendStream,remoteStream} = usePeerContext()
-
+   console.log("m",remoteStream)
    const [listMessage,setListMessage] = useState()
    const [callFrom,setCallFrom] = useState()
    const [id,setId] = useState()
@@ -193,7 +193,7 @@ const Home = () => {
          </div>
          <ModalCallVideo ref={call} endCall={endCall}/>
          <ModalncomingCall ref={incomingCall} acceptCall={acceptCall}/>
-         <ModalOnGoingCall ref={ongoingCall} myStream={myStream}/>
+         <ModalOnGoingCall ref={ongoingCall} myStream={myStream} remoteStream={remoteStream}/>
       </LayoutMain>
    )
 }
