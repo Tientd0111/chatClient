@@ -9,9 +9,9 @@ import { PeerProvider } from '@/contexts/Peer.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
    <React.StrictMode>
       <ContextProvider>
-         <PeerProvider>
+         {/*<PeerProvider>*/}
             <App />
-         </PeerProvider>
+         {/*</PeerProvider>*/}
       </ContextProvider>
    </React.StrictMode>
 )

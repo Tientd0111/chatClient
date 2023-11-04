@@ -9,20 +9,26 @@ import ModalCallVideo from '@/components/modal/ModalCallVideo.jsx'
 import { usePeerContext } from '@/contexts/Peer.jsx'
 import ModalncomingCall from '@/components/modal/ModalncomingCall'
 import ModalOnGoingCall from '@/components/modal/ModalOnGoingCall.jsx'
+import PeerService from '../../constants/Peer';
 
 const Home = () => {
+   // const PeerService = new peer
    const msgRef = useRef()
    const call = useRef()
    const incomingCall = useRef()
    const ongoingCall = useRef()
-   const {peer,createOffer,createAnswere,setRemoteAns,sendStream,remoteStream} = usePeerContext()
-   console.log("m",remoteStream)
+   // const {peer,createOffer,createAnswere,setRemoteAns,sendStream,remoteStream} = usePeerContext()
+   // console.log("m",remoteStream)
+
+   // const {peer,getAnswer,getOffer,setLocalDescription} = PeerService()
+
    const [listMessage,setListMessage] = useState()
    const [callFrom,setCallFrom] = useState()
    const [id,setId] = useState()
    const [listImage,setListImage] = useState()
    const [myStream,setMyStream] = useState(null)
    const [infoCall,setInfoCall] = useState()
+   const [remoteStream,setRemoteStream] = useState(null)
 
    const idUser = JSON.parse(localStorage?.getItem("user"))._id
 
@@ -41,7 +47,6 @@ const Home = () => {
    const {socket} = useSocket(state => ({
       socket: state.socket
    }))
-
    async function getMessage(id){
       await getListMessage(id).then(res => {
          setListMessage(res?.message)
@@ -58,6 +63,33 @@ const Home = () => {
       funcGetMyConversation()
    },[])
 
+   //callback socket
+   const handleNegoNeedIncomming = useCallback(async (data) => {
+         const ans = await PeerService.getAnswer(data?.offer);
+         socket.emit("done", {ans: ans});
+      },
+      [socket]
+   );
+
+   const handleNegoNeedFinal = useCallback(async ({ ans }) => {
+      await peer.setLocalDescription(ans);
+   }, []);
+
+   //
+
+   // stream
+   const sendStreams = useCallback(() => {
+      for (const track of myStream.getTracks()) {
+         PeerService.peer?.addTrack(track, myStream);
+      }
+   }, [myStream]);
+
+   useEffect(()=>{
+      if(myStream){
+         sendStreams()
+      }
+   },[myStream])
+
    useEffect(()=>{
       const addMessage = (msg) => {
          setListMessage(prevMessages => [...prevMessages, msg])
@@ -70,24 +102,45 @@ const Home = () => {
          console.log("x",data)
       })
 
-      socket.on("incoming-call", (data) => {
+      socket.on("incoming-call", async (data) => {
          setCallFrom(data)
+         const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true,
+         });
+         console.log(stream)
+         setMyStream(stream);
          incomingCall?.current?.open()
       })
 
-      socket.on("accepted",async (data) => {
+
+      socket.on("needed",handleNegoNeedIncomming)
+
+      socket.on("final", handleNegoNeedFinal)
+      return () => socket.off();
+   },[])
+
+
+   const handleCallAccepted = useCallback(async (data) => {
          const {ans} = data
-         await setRemoteAns(ans)
-         await getUserMediaStream()
-         // sendStream(myStream)
+         console.log("anss",ans)
+         await PeerService.setLocalDescriptionCall(ans);
+         // await setRemoteAns(ans)
+         // await getUserMediaStream()
          if(ans){
             call?.current?.close()
             incomingCall?.current?.close()
             ongoingCall?.current?.open()
          }
-      })
-      return () => socket.off();
+         sendStreams()
+
+      }, [sendStreams]);
+
+   useEffect(()=>{
+      socket.on("accepted",handleCallAccepted)
+      return ()=> socket.off()
    },[])
+
    const sendMessage = (data) => {
       const dataChat = {
          sender: idUser,
@@ -96,7 +149,6 @@ const Home = () => {
          message_image: data?.message_image?.files?.length > 0 ? data.message_image.files: []
       }
       socket.emit("send-message",dataChat)
-      // console.log(data)
    }
 
    const onTyping = (e) => {
@@ -132,9 +184,10 @@ const Home = () => {
       })
    }
 
+   // gọi
    const callVideo = async (data) => {
       call?.current?.open()
-      const offer = await createOffer()
+      const offer = await PeerService.getOffer();
       setInfoCall(data)
       const body = {
          arrive: data.arrive,
@@ -142,13 +195,19 @@ const Home = () => {
          offer: offer
       }
       socket.emit("call-video",body)
+      const stream = await navigator.mediaDevices.getUserMedia({
+         audio: true,
+         video: true,
+      });
+      setMyStream(stream);
    }
 
    const acceptCall = async (data) => {
-      const ans = await createAnswere(callFrom?.offer)
+      const ans = await PeerService.getAnswer(callFrom?.offer);
+      // socket.emit("call:accepted", { to: from, ans });
+      // const ans = await createAnswere(callFrom?.offer)
       socket.emit("call-accepted",{call_from: callFrom?.from,ans: ans})
    }
-
    const endCall = (data) => {
       call?.current?.close()
    }
@@ -170,21 +229,47 @@ const Home = () => {
    // },[])
 
    // console.log("peer",peer.addEventListener("track", ))
-   const getUserMediaStream = useCallback(async () => {
-      try {
-         const stream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: true
-         })
-         // console.log(stream)
-         sendStream(stream)
-         setMyStream(stream)
-      } catch (error) {
-         console.error(error)
+   // const getUserMediaStream = useCallback(async () => {
+   //    try {
+   //       const stream = await navigator.mediaDevices.getUserMedia({
+   //          audio: true,
+   //          video: true
+   //       })
+   //       // console.log(stream)
+   //       sendStream(stream)
+   //       setMyStream(stream)
+   //    } catch (error) {
+   //       console.error(error)
+   //    }
+   // },[])
+
+
+   // mới
+
+   const handleNegoNeeded = useCallback(async () => {
+      const offer = await PeerService.getOffer();
+      socket.emit("needed", { offer: offer, to: infoCall.arrive });
+   }, [infoCall, socket]);
+
+   useEffect(() => {
+      if(PeerService.peer){
+         PeerService.peer.addEventListener("negotiationneeded", handleNegoNeeded);
+         return () => {
+            PeerService.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
+         };
       }
-   },[])
+   }, [handleNegoNeeded]);
 
 
+   useEffect(() => {
+      PeerService.peer.addEventListener('track', async (ev) => {
+         const remoteStream = ev.streams;
+         console.log('GOT TRACKS!!');
+         setRemoteStream(remoteStream[0]);
+      });
+   }, []);
+
+   console.log("vvvvvvv",remoteStream)
    return (
       <LayoutMain>
          <div className="tyn-content tyn-content-full-height tyn-chat has-aside-base">
