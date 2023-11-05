@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes as ListRoute } from 'react-router-dom'
-import Home from '@/pages/chat/Home'
 import React, { useEffect } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 import Login from '@/pages/user/Login.jsx'

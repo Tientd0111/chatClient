@@ -13,18 +13,15 @@ import PeerService from '../../constants/Peer'
 import ModalTest from '@/components/modal/ModalTest.jsx'
 
 const Home = () => {
-   // const PeerService = new peer
    const msgRef = useRef()
    const call = useRef()
    const incomingCall = useRef()
    const ongoingCall = useRef()
    // const {peer,createOffer,createAnswere,setRemoteAns,sendStream,remoteStream} = usePeerContext()
-   // console.log("m",remoteStream)
 
    // const {peer,getAnswer,getOffer,setLocalDescription} = PeerService()
 
    const [listMessage, setListMessage] = useState()
-   const [callFrom, setCallFrom] = useState()
    const [id, setId] = useState()
    const [listImage, setListImage] = useState()
    const [myStream, setMyStream] = useState(null)
@@ -83,7 +80,6 @@ const Home = () => {
       socket.on(`return-message`, addMessage)
 
       socket.on('getOnlineUser', (data) => {
-         console.log('x', data)
       })
 
       return () => socket.off()
@@ -159,11 +155,14 @@ const Home = () => {
          video: true,
       })
       setMyStream(stream)
+      console.log(`Incoming Call`, data.offer);
    }
 
    const acceptCall = async () => {
       const ans = await PeerService.getAnswer(infoCall.offer)
       socket.emit('call-accepted', { conversation_id: id, ans: ans })
+      incomingCall?.current?.close()
+      ongoingCall?.current?.open()
    }
 
    const sendStreams = useCallback(() => {
@@ -178,7 +177,6 @@ const Home = () => {
          console.log('Call Accepted!')
          if (ans) {
             call?.current?.close()
-            incomingCall?.current?.close()
             ongoingCall?.current?.open()
          }
          sendStreams()
@@ -186,26 +184,27 @@ const Home = () => {
       [sendStreams],
    )
 
-   const handleNegoNeeded = async () => {
+   const handleNegoNeeded = useCallback(async (id) => {
       const offer = await PeerService.getOffer()
-      socket.emit('needed', { offer: offer, conversation_id: id, call_form: idUser })
-   }
+      socket.emit('needed', { offer: offer, conversation_id: "6535d86371e025bda135a57e", call_form: idUser })
+   },[])
 
    useEffect(() => {
       PeerService.peer.addEventListener('negotiationneeded', handleNegoNeeded)
       return () => {
          PeerService.peer.removeEventListener('negotiationneeded', handleNegoNeeded)
       }
-   }, [handleNegoNeeded])
+   }, [])
 
-   const handleNegoNeedIncomming = async ({ from, offer }) => {
+   const handleNegoNeedIncomming = useCallback(async ({ from, offer }) => {
       const ans = await PeerService.getAnswer(offer)
-      socket.emit('done', { conversation_id: id, call_form: idUser, offer: ans })
-   }
+      socket.emit('done', { conversation_id: "6535d86371e025bda135a57e", call_form: idUser, offer: ans })
+   },[])
 
    const handleNegoNeedFinal = useCallback(async ({ ans }) => {
+      console.log("aaa",ans)
       await PeerService.setLocalDescription(ans)
-   }, [])
+   },[])
 
    useEffect(() => {
       PeerService.peer.addEventListener('track', async (ev) => {
@@ -219,13 +218,13 @@ const Home = () => {
    useEffect(() => {
       socket.on('incoming-call', handleIncommingCall)
       socket.on('accepted', handleCallAccepted)
-      socket.on('needed', handleNegoNeedIncomming)
+      socket.on('return-needed', handleNegoNeedIncomming)
       socket.on('final', handleNegoNeedFinal)
 
       return () => {
          socket.off('incoming-call', handleIncommingCall)
          socket.off('accepted', handleCallAccepted)
-         socket.off('needed', handleNegoNeedIncomming)
+         socket.off('return-needed', handleNegoNeedIncomming)
          socket.off('final', handleNegoNeedFinal)
       }
    }, [
@@ -235,10 +234,7 @@ const Home = () => {
       handleNegoNeedFinal,
    ])
 
-
    // End call
-   console.log(myStream)
-
    const endCall = async (data) => {
       for (const track of myStream.getTracks()) {
          track.stop();
@@ -273,7 +269,7 @@ const Home = () => {
          {/*<ModalTest sendStreams={sendStreams} myStream={myStream} remoteStream={remoteStream} ref={call}/>*/}
          <ModalCallVideo ref={call} />
          <ModalncomingCall ref={incomingCall} acceptCall={acceptCall} />
-         <ModalOnGoingCall endCall={endCall} mic={mute} onMute={onMute} ref={ongoingCall} myStream={myStream} remoteStream={remoteStream} />
+         <ModalOnGoingCall sendStreams={sendStreams} endCall={endCall} mic={mute} onMute={onMute} ref={ongoingCall} myStream={myStream} remoteStream={remoteStream} />
       </LayoutMain>
    )
 }

@@ -16,8 +16,9 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
       }
    }));
 
-   const {myStream,remoteStream,onMute,mic,endCall} = props
+   const {myStream,remoteStream,onMute,mic,endCall,sendStreams} = props
 
+   console.log("remote",remoteStream)
    console.log(mic)
 
    return (
@@ -67,6 +68,7 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                               className="btn btn-icon btn-pill btn-light"
                               data-bs-toggle="modal"
                               data-bs-target="#callingScreen"
+                              onClick={sendStreams}
                            >
                               {/* camera-video-fill */}
                               <svg

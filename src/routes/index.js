@@ -1,12 +1,12 @@
 import paths from '../constants/path.jsx'
 import Login from '../pages/user/Login.jsx'
 import Contact from '../pages/contact/Contact.jsx'
-import Home from '../pages/chat/Home.jsx'
+import Chat from '@/pages/chat/Chat'
 
 
 const privateRoutes = [
    // chat
-   {path: paths.CHAT, component: <Home/> },
+   {path: paths.CHAT, component: <Chat/> },
    //contact
    {path: paths.CONTACT, component: <Contact/> }
 ];
