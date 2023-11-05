@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes as ListRoute } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Navigate, Route, Routes as ListRoute } from 'react-router-dom'
 import Home from '@/pages/chat/Home'
 import React, { useEffect } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
@@ -35,17 +35,19 @@ function App() {
          <div className={"tyn-body"}>
             <div className={"tyn-root"}>
                <div className="app">
-                  <BrowserRouter>
-                     <ListRoute>
-                        <Route element={<Login/>} path={path.LOGIN} />
-                     </ListRoute>
-                     <RequireAuth>
+                  <HashRouter basename={path.CHAT}>
+                     <BrowserRouter>
                         <ListRoute>
-                           <Route element={<Chat/>} path={path.CHAT} />
-                           <Route element={<Contact/>} path={path.CONTACT} />
+                           <Route element={<Login/>} path={path.LOGIN} />
                         </ListRoute>
-                     </RequireAuth>
-                  </BrowserRouter>
+                        <RequireAuth>
+                           <ListRoute>
+                              <Route element={<Chat/>} path={path.CHAT} />
+                              <Route element={<Contact/>} path={path.CONTACT} />
+                           </ListRoute>
+                        </RequireAuth>
+                     </BrowserRouter>
+                  </HashRouter>
                </div>
             </div>
          </div>
