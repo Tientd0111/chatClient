@@ -1,8 +1,11 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Modal } from 'antd'
+import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const ModalIncomingCall = forwardRef((props, ref) => {
    const [show, setShow] = useState(false);
+   const idUser = JSON.parse(localStorage?.getItem('user'))._id
+
    const cancel = () => {
       setShow(false)
    }
@@ -13,7 +16,7 @@ const ModalIncomingCall = forwardRef((props, ref) => {
       }
    }));
 
-   const {acceptCall} = props
+   const {acceptCall,infoConversation} = props
 
 
 
@@ -33,20 +36,34 @@ const ModalIncomingCall = forwardRef((props, ref) => {
                <div className="tyn-chat-call tyn-chat-call-video">
                   <div className="tyn-chat-call-stack">
                      <div className="tyn-chat-call-cover">
-                        <img src="../../../src/assets/images/v-cover/2.jpg" alt="" />
+                        {
+                           infoConversation?.user_1?._id === idUser ?
+                              <img src={environmentConfig.BASE_URI + infoConversation?.user_2?.avatar} alt="" />:
+                              <img src={environmentConfig.BASE_URI + infoConversation?.user_1?.avatar} alt="" />
+                        }
                      </div>
                   </div>
                   <div className="tyn-chat-call-stack on-dark">
                      <div className="tyn-media-group tyn-media-vr tyn-media-center mt-auto">
                         <div className="tyn-media tyn-size-xl tyn-circle border border-2 border-white">
-                           <img src="../../../src/assets/images/v-cover/1.jpg" alt="" />
+                           {
+                              infoConversation?.user_1?._id === idUser ?
+                                 <img src={environmentConfig.BASE_URI + infoConversation?.user_2?.avatar} alt="" />:
+                                 <img src={environmentConfig.BASE_URI + infoConversation?.user_1?.avatar} alt="" />
+                           }
                         </div>
                         <div className="tyn-media-col">
                            <div className="tyn-media-row has-dot-sap">
-                              <span className="meta">VIdeo Call From ..</span>
+                              <span className="meta">Video Call From ..</span>
                            </div>
                            <div className="tyn-media-row">
-                              <h6 className="name">Konstantin Frank</h6>
+                              <h6 className="name">
+                                 {
+                                    infoConversation?.user_1?.id === idUser ?
+                                       infoConversation?.user_2?.name:
+                                       infoConversation?.user_1?.name
+                                 }
+                              </h6>
                            </div>
                         </div>
                      </div>

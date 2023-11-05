@@ -199,6 +199,7 @@ const Home = () => {
    const handleNegoNeedIncomming = useCallback(async ({ from, offer }) => {
       const ans = await PeerService.getAnswer(offer)
       socket.emit('done', { conversation_id: "6535d86371e025bda135a57e", call_form: idUser, offer: ans })
+      sendStreams()
    },[])
 
    const handleNegoNeedFinal = useCallback(async ({ ans }) => {
@@ -267,8 +268,8 @@ const Home = () => {
                       sendMessage={sendMessage} />
          </div>
          {/*<ModalTest sendStreams={sendStreams} myStream={myStream} remoteStream={remoteStream} ref={call}/>*/}
-         <ModalCallVideo ref={call} />
-         <ModalncomingCall ref={incomingCall} acceptCall={acceptCall} />
+         <ModalCallVideo  infoConversation={infoConversation} myStream={myStream} ref={call} />
+         <ModalncomingCall infoConversation={infoConversation} ref={incomingCall} acceptCall={acceptCall} />
          <ModalOnGoingCall sendStreams={sendStreams} endCall={endCall} mic={mute} onMute={onMute} ref={ongoingCall} myStream={myStream} remoteStream={remoteStream} />
       </LayoutMain>
    )
