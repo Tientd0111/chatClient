@@ -23,8 +23,10 @@ class PeerService {
       }
    }
 
-   async setLocalDescriptionCall(ans) {
+   async setLocalDescription(ans) {
       if (this.peer) {
+         console.log("=====",ans)
+
          await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
       }
    }

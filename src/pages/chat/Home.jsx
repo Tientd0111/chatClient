@@ -72,7 +72,7 @@ const Home = () => {
    );
 
    const handleNegoNeedFinal = useCallback(async ({ ans }) => {
-      await peer.setLocalDescription(ans);
+      await PeerService.setLocalDescription(ans);
    }, []);
 
    //
@@ -80,15 +80,10 @@ const Home = () => {
    // stream
    const sendStreams = useCallback(() => {
       for (const track of myStream.getTracks()) {
-         PeerService.peer?.addTrack(track, myStream);
+         PeerService.peer.addTrack(track, myStream);
       }
    }, [myStream]);
 
-   useEffect(()=>{
-      if(myStream){
-         sendStreams()
-      }
-   },[myStream])
 
    useEffect(()=>{
       const addMessage = (msg) => {
@@ -103,14 +98,16 @@ const Home = () => {
       })
 
       socket.on("incoming-call", async (data) => {
-         setCallFrom(data)
+         setInfoCall(data)
          const stream = await navigator.mediaDevices.getUserMedia({
             audio: true,
             video: true,
          });
          console.log(stream)
          setMyStream(stream);
-         incomingCall?.current?.open()
+         ongoingCall?.current?.open()
+         const ans = await PeerService.getAnswer(data?.offer);
+         socket.emit("call-accepted",{call_from: data?.from,ans: ans})
       })
 
 
@@ -120,10 +117,8 @@ const Home = () => {
       return () => socket.off();
    },[])
 
-
    const handleCallAccepted = useCallback(async (data) => {
          const {ans} = data
-         console.log("anss",ans)
          await PeerService.setLocalDescriptionCall(ans);
          // await setRemoteAns(ans)
          // await getUserMediaStream()
@@ -136,10 +131,11 @@ const Home = () => {
 
       }, [sendStreams]);
 
+
    useEffect(()=>{
       socket.on("accepted",handleCallAccepted)
       return ()=> socket.off()
-   },[])
+   },[myStream])
 
    const sendMessage = (data) => {
       const dataChat = {
@@ -203,49 +199,18 @@ const Home = () => {
    }
 
    const acceptCall = async (data) => {
-      const ans = await PeerService.getAnswer(callFrom?.offer);
+      const ans = await PeerService.getAnswer(infoCall?.offer);
       // socket.emit("call:accepted", { to: from, ans });
       // const ans = await createAnswere(callFrom?.offer)
-      socket.emit("call-accepted",{call_from: callFrom?.from,ans: ans})
+      socket.emit("call-accepted",{call_from: infoCall?.from,ans: ans})
    }
    const endCall = (data) => {
       call?.current?.close()
    }
-   // const handleNegotiation = useCallback(()=>{
-   //    console.log("nsadasdsadkasd")
-   //    // const localOffer = peer.localDescription
-   //    // const body = {
-   //    //    arrive: infoCall.arrive,
-   //    //    call_from: infoCall.call_from,
-   //    //    offer: localOffer
-   //    // }
-   //    // socket.emit("call-video",body)
-   // },[])
-   // useEffect(()=>{
-   //    peer.addEventListener("negotiationneeded",handleNegotiation)
-   //    return () => {
-   //       peer.removeEventListener("negotiationneeded",handleNegotiation)
-   //    }
-   // },[])
-
-   // console.log("peer",peer.addEventListener("track", ))
-   // const getUserMediaStream = useCallback(async () => {
-   //    try {
-   //       const stream = await navigator.mediaDevices.getUserMedia({
-   //          audio: true,
-   //          video: true
-   //       })
-   //       // console.log(stream)
-   //       sendStream(stream)
-   //       setMyStream(stream)
-   //    } catch (error) {
-   //       console.error(error)
-   //    }
-   // },[])
 
 
    // mới
-
+   console.log("info",infoCall)
    const handleNegoNeeded = useCallback(async () => {
       const offer = await PeerService.getOffer();
       socket.emit("needed", { offer: offer, to: infoCall.arrive });
@@ -269,7 +234,6 @@ const Home = () => {
       });
    }, []);
 
-   console.log("vvvvvvv",remoteStream)
    return (
       <LayoutMain>
          <div className="tyn-content tyn-content-full-height tyn-chat has-aside-base">

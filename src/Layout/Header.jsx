@@ -55,7 +55,6 @@ const Header = () => {
       return () => socket.off();
    },[])
 
-   console.log("x",listNoti)
    return (
       <nav className="tyn-appbar">
          <div className="tyn-appbar-wrap">
@@ -242,4 +241,4 @@ const Header = () => {
    )
 }
 
-export default Header
+export default React.memo(Header)

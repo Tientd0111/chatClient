@@ -14,7 +14,6 @@ const ModalCallVideo= forwardRef((props, ref) => {
       }
    }));
 
-   const {endCall} = props
 
 
    return (
@@ -105,7 +104,7 @@ const ModalCallVideo= forwardRef((props, ref) => {
                            </button>
                         </li>
                         <li>
-                           <button className="btn btn-icon btn-pill btn-danger" onClick={endCall}>
+                           <button className="btn btn-icon btn-pill btn-danger">
                               {/* telephone-x-fill */}
                               <svg
                                  xmlns="http://www.w3.org/2000/svg"
