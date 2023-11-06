@@ -27,7 +27,9 @@ const Home = () => {
    const [myStream, setMyStream] = useState(null)
    const [infoCall, setInfoCall] = useState()
    const [remoteStream, setRemoteStream] = useState(null)
-   const [mute, setMute] = useState(false)
+   const [mic, setMic] = useState(true)
+   const [video, setVideo] = useState(true)
+   const [statusVideo, setStatusVideo] = useState(true)
 
    const idUser = JSON.parse(localStorage?.getItem('user'))._id
 
@@ -85,7 +87,6 @@ const Home = () => {
       return () => socket.off()
    }, [])
 
-
    const sendMessage = (data) => {
       const dataChat = {
          sender: idUser,
@@ -142,6 +143,7 @@ const Home = () => {
          audio: true,
          video: true,
       })
+      console.log("xxxxxxx",stream)
       socket.emit('call-video', body)
       setMyStream(stream)
       call.current.open()
@@ -200,7 +202,7 @@ const Home = () => {
       const ans = await PeerService.getAnswer(offer)
       socket.emit('done', { conversation_id: "6535d86371e025bda135a57e", call_form: idUser, offer: ans })
       sendStreams()
-   },[])
+   },[sendStreams])
 
    const handleNegoNeedFinal = useCallback(async ({ ans }) => {
       console.log("aaa",ans)
@@ -216,41 +218,77 @@ const Home = () => {
       })
    }, [])
 
+
+   const handleVideo = useCallback(() => {
+      const videoTrack = myStream.getVideoTracks()[0]
+      if(video){
+         setVideo(false)
+         videoTrack.enabled = false
+      }else {
+         setVideo(true)
+         videoTrack.enabled = true
+      }
+      socket.emit("change-video",{conversation_id: id,status: videoTrack.enabled})
+   },[video,myStream])
+
+   const handleMic = useCallback(() => {
+      const audioTrack = myStream.getAudioTracks()[0]
+      if(mic){
+         setMic(false)
+         return audioTrack.enabled = false
+      }else {
+         setMic(true)
+         return audioTrack.enabled = true
+      }
+   },[mic,myStream])
+
+   const handleEndCall = useCallback((data) => {
+      // PeerService.peer.close()
+      // for (const track of myStream.getTracks()) {
+      //    track.stop();
+      // }
+
+      // myStream.removeTrack(videoTrack)
+      // myStream.removeTrack(audioTrack)
+      // setRemoteStream(null)
+      // setMyStream(null)
+      ongoingCall?.current?.close()
+      incomingCall?.current?.close()
+      call?.current?.close()
+   },[remoteStream])
+
+   // const handleChangeStatusVideo = useCallback((data) => {
+   //    console.log("<",data)
+   // },[])
    useEffect(() => {
       socket.on('incoming-call', handleIncommingCall)
       socket.on('accepted', handleCallAccepted)
       socket.on('return-needed', handleNegoNeedIncomming)
       socket.on('final', handleNegoNeedFinal)
+      socket.on('end', handleEndCall)
+      // socket.on('status-video', handleChangeStatusVideo)
 
       return () => {
          socket.off('incoming-call', handleIncommingCall)
          socket.off('accepted', handleCallAccepted)
          socket.off('return-needed', handleNegoNeedIncomming)
          socket.off('final', handleNegoNeedFinal)
+         socket.off('end', handleEndCall)
       }
    }, [
       handleIncommingCall,
       handleCallAccepted,
       handleNegoNeedIncomming,
       handleNegoNeedFinal,
+      handleEndCall
    ])
 
    // End call
    const endCall = async (data) => {
-      for (const track of myStream.getTracks()) {
-         track.stop();
-      }
-      setMyStream(null)
-      const transceiver = PeerService.peer.getTransceivers()[0];
-      transceiver.stop();
-      ongoingCall?.current?.close()
-      incomingCall?.current?.close()
-      call?.current?.close()
+      console.log("aaa",id)
+      socket.emit("end-call", {conversation_id: id,from: idUser})
+   }
 
-   }
-   const onMute = () => {
-      setMute(!mute)
-   }
 
 
 
@@ -270,7 +308,7 @@ const Home = () => {
          {/*<ModalTest sendStreams={sendStreams} myStream={myStream} remoteStream={remoteStream} ref={call}/>*/}
          <ModalCallVideo  infoConversation={infoConversation} myStream={myStream} ref={call} />
          <ModalncomingCall infoConversation={infoConversation} ref={incomingCall} acceptCall={acceptCall} />
-         <ModalOnGoingCall sendStreams={sendStreams} endCall={endCall} mic={mute} onMute={onMute} ref={ongoingCall} myStream={myStream} remoteStream={remoteStream} />
+         <ModalOnGoingCall video={video} handleMic={handleMic} sendStreams={handleVideo} endCall={endCall} mic={mic} ref={ongoingCall} myStream={myStream} remoteStream={remoteStream} />
       </LayoutMain>
    )
 }

@@ -1,11 +1,24 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { Modal } from 'antd'
 import path from '@/constants/path.jsx'
 import ReactPlayer from 'react-player'
-import { BsFillMicFill, BsFillMicMuteFill, BsFillTelephoneXFill } from 'react-icons/bs'
+import {
+   BsFillCameraVideoFill,
+   BsFillCameraVideoOffFill,
+   BsFillMicFill,
+   BsFillMicMuteFill,
+   BsFillTelephoneXFill,
+} from 'react-icons/bs'
+import { useSocket } from '@/stores/useSocket.jsx'
 
 const ModalOnGoingCall = forwardRef((props, ref) => {
+   const {socket} = useSocket(state => ({
+      socket: state.socket
+   }))
+
    const [show, setShow] = useState(false);
+   // const [statusVideo, setStatusVideo] = useState(true);
+
    const cancel = () => {
       setShow(false)
    }
@@ -16,11 +29,15 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
       }
    }));
 
-   const {myStream,remoteStream,onMute,mic,endCall,sendStreams} = props
-
-   console.log("remote",remoteStream)
-   console.log(mic)
-
+   const {myStream,remoteStream,handleMic,mic,endCall,sendStreams,video} = props
+   const [statusVideo,setStatusVideo] = useState(true)
+   useEffect(()=>{
+      socket.on('status-video', (data)=>{
+         setStatusVideo(data.status)
+      })
+      return () => socket.off()
+   },[])
+   console.log(statusVideo)
    return (
       <Modal
          footer={null}
@@ -38,7 +55,10 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                   <div className="tyn-chat-call-stack">
                      <div className="tyn-chat-call-cover">
                         {/*<img src="../../../src/assets/images/v-cover/1.jpg" alt="" />*/}
-                        <ReactPlayer url={remoteStream} playing={true} width={320} height={520} muted/>
+                        {statusVideo ?
+                           <ReactPlayer url={remoteStream} playing={true} width={320} height={520} /> :
+                           <img src="../../../src/assets/images/v-cover/2.jpg" alt="" />
+                        }
                      </div>
                   </div>
                   {/* .tyn-chat-call-stack */}
@@ -56,9 +76,10 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                            </div>
                         </div>
                         <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border-dark">
-                           {/*<img src="../../../src/assets/images/v-cover/2.jpg" alt="" />*/}
-                           <ReactPlayer url={myStream} playing={true} width={96} height={125} muted={mic}/>
-
+                           {video ?
+                              <ReactPlayer url={myStream} playing={true} width={96} height={125} muted />:
+                              <img src="../../../src/assets/images/v-cover/2.jpg" alt="" />
+                           }
                         </div>
                      </div>
                      {/* .tyn-media-group */}
@@ -71,25 +92,16 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                               onClick={sendStreams}
                            >
                               {/* camera-video-fill */}
-                              <svg
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 width={16}
-                                 height={16}
-                                 fill="currentColor"
-                                 className="bi bi-camera-video-fill"
-                                 viewBox="0 0 16 16"
-                              >
-                                 <path
-                                    fillRule="evenodd"
-                                    d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"
-                                 />
-                              </svg>
+                              {video ?
+                                 <BsFillCameraVideoFill/> :
+                                 <BsFillCameraVideoOffFill/>
+                              }
                            </button>
                         </li>
                         <li>
-                           <button className="btn btn-icon btn-pill btn-light" onClick={onMute}>
+                           <button className="btn btn-icon btn-pill btn-light" onClick={handleMic}>
                               {/* mic-mute-fill */}
-                              {!mic ?
+                              {mic ?
                                  <BsFillMicFill/>:
                                  <BsFillMicMuteFill/>
                               }
