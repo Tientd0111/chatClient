@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useContext } from "react";
+import React, { createContext, useMemo, useContext, useEffect } from 'react'
 import { io } from "socket.io-client";
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
@@ -10,7 +10,8 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-   const socket = useMemo(() => io(environmentConfig.URI_SOCKET), []);
+   const token = localStorage.getItem("key")
+   const socket = useMemo(() => io(environmentConfig.URI_SOCKET,{query:{token: token}}), []);
 
    return (
       <SocketContext.Provider value={socket}>

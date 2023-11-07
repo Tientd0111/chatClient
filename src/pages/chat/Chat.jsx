@@ -4,7 +4,7 @@ import SideBarChat from '@/pages/chat/layout/SideBarChat.jsx'
 import MainChat from '@/pages/chat/layout/MainChat.jsx'
 import useConversationStore from '@/stores/useConversationStore.jsx'
 import useMessageStore from '@/stores/useMessageStore.jsx'
-import { useSocket } from '@/stores/useSocket.jsx'
+// import { useSocket } from '@/stores/useSocket.jsx'
 import ModalCallVideo from '@/components/modal/ModalCallVideo.jsx'
 import { usePeerContext } from '@/contexts/Peer.jsx'
 import ModalncomingCall from '@/components/modal/ModalncomingCall'
@@ -12,6 +12,7 @@ import ModalOnGoingCall from '@/components/modal/ModalOnGoingCall.jsx'
 import PeerService from '../../constants/Peer'
 import ModalTest from '@/components/modal/ModalTest.jsx'
 import useWindowDimensions from '@/hook/useWindowDimensions.jsx'
+import { useSocket } from '@/contexts/SocketProvider.jsx'
 
 const Home = () => {
    const msgRef = useRef()
@@ -50,9 +51,7 @@ const Home = () => {
       getListImage: state.getListImage,
    }))
 
-   const { socket } = useSocket(state => ({
-      socket: state.socket,
-   }))
+   const socket = useSocket();
 
    async function getMessage(id) {
       await getListMessage(id).then(res => {
