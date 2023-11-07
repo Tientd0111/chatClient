@@ -34,7 +34,6 @@ function App() {
          <div className={"tyn-body"}>
             <div className={"tyn-root"}>
                <div className="app">
-                  <BrowserRouter>
                      <ListRoute>
                         <Route element={<Login/>} path={path.LOGIN} />
                      </ListRoute>
@@ -44,7 +43,6 @@ function App() {
                            <Route element={<Contact/>} path={path.CONTACT} />
                         </ListRoute>
                      </RequireAuth>
-                  </BrowserRouter>
                </div>
             </div>
          </div>

@@ -1,6 +1,6 @@
 const path = {
    LOGIN: "/login",
-   CHAT: "/chat",
+   CHAT: "/",
    CONTACT: "/contact",
    TEST: "/test",
 };

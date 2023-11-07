@@ -7,6 +7,7 @@ import useFriendStore from '@/stores/useFriendStore.jsx'
 const Contact = () => {
    const [id,setId] = useState()
    const [info,setInfo] = useState()
+   const [showInfo,setShowInfo] = useState(false)
 
    const {getListFriend,listFriend,getById} = useFriendStore(state => ({
       getListFriend: state.getListFriend,
@@ -40,17 +41,20 @@ const Contact = () => {
    },[listFriend])
 
    const chooseFriend = (id) => {
+      setShowInfo(true)
       setId(id)
       getById(id).then(res => {
          setInfo(res)
       })
-
+   }
+   const hideInfo = () => {
+      setShowInfo(false)
    }
    return (
       <LayoutMain>
          <div className={"tyn-content tyn-contact  has-aside-base"}>
             <SideBarContact listFriend={listFriend} id={id} chooseFriend={chooseFriend}/>
-            <MainContact id={id} info={info}/>
+            <MainContact onHideInfo={hideInfo} showInfo={showInfo} id={id} info={info}/>
          </div>
       </LayoutMain>
    )

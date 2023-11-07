@@ -4,13 +4,15 @@ import App from './App.jsx'
 import './index.scss'
 import 'react-photo-view/dist/react-photo-view.css'
 import { ContextProvider } from '@/contexts/ContextProvider.jsx'
-import { PeerProvider } from '@/contexts/Peer.jsx'
+import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
    <React.StrictMode>
       <ContextProvider>
-         {/*<PeerProvider>*/}
+         <BrowserRouter>
             <App />
+         </BrowserRouter>
+         {/*<PeerProvider>*/}
          {/*</PeerProvider>*/}
       </ContextProvider>
    </React.StrictMode>

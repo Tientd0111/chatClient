@@ -10,6 +10,7 @@ import {
    BsFillTelephoneXFill,
 } from 'react-icons/bs'
 import { useSocket } from '@/stores/useSocket.jsx'
+import { IoIosReverseCamera } from 'react-icons/io'
 
 const ModalOnGoingCall = forwardRef((props, ref) => {
    const {socket} = useSocket(state => ({
@@ -84,6 +85,15 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                      </div>
                      {/* .tyn-media-group */}
                      <ul className="tyn-list-inline gap gap-3 mx-auto py-4 justify-content-center  mt-auto">
+                        <li>
+                           <button
+                              className="btn btn-icon btn-pill btn-light"
+                              data-bs-toggle="modal"
+                              data-bs-target="#callingScreen"
+                           >
+                              <IoIosReverseCamera/>
+                           </button>
+                        </li>
                         <li>
                            <button
                               className="btn btn-icon btn-pill btn-light"

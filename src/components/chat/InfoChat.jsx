@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { Tabs } from 'antd'
 import environmentConfig from '@/apis/environmentConfig.jsx'
+import useWindowDimensions from '@/hook/useWindowDimensions.jsx'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
 
-const InfoChat = ({ showInfo ,infoConversation,listImage}) => {
-   console.log("x",listImage)
+const InfoChat = ({ showInfo ,infoConversation,listImage,onDisplayInfo}) => {
+   const {width} = useWindowDimensions()
+
    const id = JSON.parse(localStorage?.getItem("user"))._id
 
    const [tabAct,setTabAct] = useState("media")
@@ -18,6 +21,11 @@ const InfoChat = ({ showInfo ,infoConversation,listImage}) => {
                infoConversation?.user_1?._id === id ?
                   (environmentConfig.BASE_URI + infoConversation?.user_2?.cover) : (environmentConfig.BASE_URI + infoConversation?.user_1?.cover)
             } alt="" />
+            {width < 768 &&
+               <span className={"icon-close"} onClick={()=>onDisplayInfo(false)}>
+                  <AiOutlineCloseCircle color={"#383a3b"}/>
+               </span>
+            }
          </div>
          <div className='tyn-media-group tyn-media-vr tyn-media-center mt-n4'>
             <div className='tyn-media tyn-size-xl border border-2 border-white'>

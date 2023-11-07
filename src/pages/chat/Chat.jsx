@@ -11,6 +11,7 @@ import ModalncomingCall from '@/components/modal/ModalncomingCall'
 import ModalOnGoingCall from '@/components/modal/ModalOnGoingCall.jsx'
 import PeerService from '../../constants/Peer'
 import ModalTest from '@/components/modal/ModalTest.jsx'
+import useWindowDimensions from '@/hook/useWindowDimensions.jsx'
 
 const Home = () => {
    const msgRef = useRef()
@@ -18,8 +19,7 @@ const Home = () => {
    const incomingCall = useRef()
    const ongoingCall = useRef()
    // const {peer,createOffer,createAnswere,setRemoteAns,sendStream,remoteStream} = usePeerContext()
-
-   // const {peer,getAnswer,getOffer,setLocalDescription} = PeerService()
+   const {width} = useWindowDimensions()
 
    const [listMessage, setListMessage] = useState()
    const [id, setId] = useState()
@@ -29,7 +29,7 @@ const Home = () => {
    const [remoteStream, setRemoteStream] = useState(null)
    const [mic, setMic] = useState(true)
    const [video, setVideo] = useState(true)
-   const [statusVideo, setStatusVideo] = useState(true)
+   const [showMessage, setShowMessage] = useState(false)
 
    const idUser = JSON.parse(localStorage?.getItem('user'))._id
 
@@ -121,6 +121,7 @@ const Home = () => {
 
 
    const chooseConversation = (id) => {
+      setShowMessage(true)
       setId(id)
       getMessage(id)
       funcGetConversationById(id)
@@ -257,9 +258,6 @@ const Home = () => {
       call?.current?.close()
    },[remoteStream])
 
-   // const handleChangeStatusVideo = useCallback((data) => {
-   //    console.log("<",data)
-   // },[])
    useEffect(() => {
       socket.on('incoming-call', handleIncommingCall)
       socket.on('accepted', handleCallAccepted)
@@ -282,6 +280,16 @@ const Home = () => {
       handleNegoNeedFinal,
       handleEndCall
    ])
+   // switch camera
+   const switchCamera = () => {
+      myStream.getVideoTracks().forEach(function(track) {
+         const sender = PeerService.peer.getSenders().find(function(s) {
+            return s.track.kind == track.kind;
+         });
+         sender.replaceTrack(track);
+      });
+   };
+
 
    // End call
    const endCall = async (data) => {
@@ -289,7 +297,10 @@ const Home = () => {
       socket.emit("end-call", {conversation_id: id,from: idUser})
    }
 
-
+   // mobile
+   const onChangeShowMessage = () => {
+      setShowMessage(false)
+   }
 
 
 
@@ -303,7 +314,10 @@ const Home = () => {
             />
             <MainChat callVideo={callVideo} listImage={listImage} onTyping={onTyping}
                       infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef}
-                      sendMessage={sendMessage} />
+                      sendMessage={sendMessage}
+                      showMessage={showMessage}
+                      onChangeShowMessage={onChangeShowMessage}
+            />
          </div>
          {/*<ModalTest sendStreams={sendStreams} myStream={myStream} remoteStream={remoteStream} ref={call}/>*/}
          <ModalCallVideo  infoConversation={infoConversation} myStream={myStream} ref={call} />

@@ -1099,6 +1099,7 @@ dl {
   --aside-width:320px;
 }
 .tyn-chat-content-aside {
+  overflow-y: scroll;
   position: absolute;
   right: 0;
   width: var(--aside-width);
@@ -1181,6 +1182,15 @@ dl {
 }
 .tyn-chat-form-input:focus-visible {
   outline: none;
+}
+.tyn-chat-cover{
+  position: relative;
+}
+.tyn-chat-cover .icon-close{
+  position: absolute;
+  top: 0;
+  left: 10px;
+  cursor: pointer;
 }
 .tyn-chat-cover img {
   height: 160px;

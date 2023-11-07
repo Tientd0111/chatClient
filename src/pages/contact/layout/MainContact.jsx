@@ -5,26 +5,21 @@ import { Tabs } from 'antd'
 import { HiCake, HiMail } from 'react-icons/hi'
 import { BsFacebook, BsFillTelephoneFill, BsInstagram, BsTwitter } from 'react-icons/bs'
 import { BiLogoTiktok } from 'react-icons/bi'
+import useWindowDimensions from '@/hook/useWindowDimensions.jsx'
+import { AiOutlineClose } from 'react-icons/ai'
 
-const MainContact = ({info}) => {
+const MainContact = ({info,showInfo,onHideInfo}) => {
+   const {width} = useWindowDimensions()
+   console.log(showInfo)
    return (
-      <div className="tyn-main tyn-content-inner" id="tynMain">
+      <div className={`tyn-main tyn-content-inner ${showInfo && width < 768 ? "main-shown":""}`} id="tynMain">
          <div className="container">
             <div className="tyn-profile">
                <ul className="tyn-list-inline d-md-none translate-middle position-absolute start-50 z-1">
                   <li>
-                     <button className="btn btn-icon btn-pill btn-white js-toggle-main">
+                     <button className="btn btn-icon btn-pill btn-white js-toggle-main" onClick={onHideInfo}>
                         {/* x-lg */}
-                        <svg
-                           xmlns="http://www.w3.org/2000/svg"
-                           width={16}
-                           height={16}
-                           fill="currentColor"
-                           className="bi bi-x-lg"
-                           viewBox="0 0 16 16"
-                        >
-                           <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                        </svg>
+                        <AiOutlineClose/>
                      </button>
                   </li>
                </ul>
@@ -171,7 +166,7 @@ const MainContact = ({info}) => {
                      </Tabs.TabPane>
                      <Tabs.TabPane tab={"Gallery"} key={3} className="tab-pane" id="profile-about">
                      </Tabs.TabPane>
-                     <Tabs.TabPane tab={"Stories"} key={3} className="tab-pane" id="profile-about">
+                     <Tabs.TabPane tab={"Stories"} key={4} className="tab-pane" id="profile-about">
 
                      </Tabs.TabPane>
                   </Tabs>

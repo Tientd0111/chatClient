@@ -1,7 +1,7 @@
 import React from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
-const HeaderChat = ({showInfo,onDisplayInfo,infoConversation,callVideo}) => {
+const HeaderChat = ({showInfo,onDisplayInfo,infoConversation,callVideo,onChangeShowMessage}) => {
    const id = JSON.parse(localStorage?.getItem("user"))._id
    const handleCall = () => {
       const data = {
@@ -15,7 +15,7 @@ const HeaderChat = ({showInfo,onDisplayInfo,infoConversation,callVideo}) => {
          <div className="tyn-chat-head">
             <ul className="tyn-list-inline d-md-none ms-n1">
                <li>
-                  <button className="btn btn-icon btn-md btn-pill btn-transparent js-toggle-main">
+                  <button className="btn btn-icon btn-md btn-pill btn-transparent js-toggle-main" onClick={onChangeShowMessage}>
                      {/* arrow-left */}
                      <svg
                         xmlns="http://www.w3.org/2000/svg"

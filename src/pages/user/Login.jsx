@@ -15,7 +15,7 @@ const Login = () => {
       const {isAuth} = await login(data)
       if(isAuth) {
          reset({username: '', password: ''})
-         navigate("/chat")
+         navigate("/")
       }
    };
    return (
