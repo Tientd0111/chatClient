@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { BsFillEmojiWinkFill, BsFillSendFill, BsImage, BsMicFill, BsPlusLg } from 'react-icons/bs'
 import axios from 'axios'
 import environmentConfig from '@/apis/environmentConfig.jsx'
+import Picker from "emoji-picker-react";
 
 const FooterChat = ({msgRef,onSendMessage,onTyping}) => {
    const [img,setImg] = useState()
-
-
+   const [visitableEmoji, setVisitableEmoji] = useState(false);
 
    const onSend = (e) => {
       e.preventDefault()
@@ -35,6 +35,10 @@ const FooterChat = ({msgRef,onSendMessage,onTyping}) => {
          console.log(e)
       }
    };
+   const onEmojiClick = (emojiObject) => {
+      msgRef.current.value += emojiObject.emoji
+   };
+
 
    return (
       <div className="tyn-chat-form">
@@ -103,11 +107,23 @@ const FooterChat = ({msgRef,onSendMessage,onTyping}) => {
                      />
                   </label>
                </li>
-               <li className="d-none d-sm-block">
-                  <button className="btn btn-icon btn-light btn-md btn-pill">
+               <li className="d-none d-sm-block" style={{position:'relative'}}>
+                  <button className="btn btn-icon btn-light btn-md btn-pill" onClick={()=>setVisitableEmoji(!visitableEmoji)}>
                      {/* emoji-smile-fill */}
-                     <BsFillEmojiWinkFill/>
+                     <BsFillEmojiWinkFill />
                   </button>
+                  {visitableEmoji &&
+                     <span style={{position:"absolute",top:"-450px"}}>
+                        <Picker
+                           onEmojiClick={onEmojiClick}
+                           skinTonesDisabled={true}
+                           searchDisabled={true}
+                           lazyLoadEmojis={true}
+                           autoFocusSearch={false}
+
+                        />
+                     </span>
+                  }
                </li>
             </ul>
          </div>
