@@ -7,10 +7,11 @@ import { BsFacebook, BsFillTelephoneFill, BsInstagram, BsTwitter } from 'react-i
 import { BiLogoTiktok } from 'react-icons/bi'
 import useWindowDimensions from '@/hook/useWindowDimensions.jsx'
 import { AiOutlineClose } from 'react-icons/ai'
+import Stories from '@/components/contact/Stories.jsx'
 
 const MainContact = ({info,showInfo,onHideInfo}) => {
    const {width} = useWindowDimensions()
-   console.log(showInfo)
+   console.log(info)
    return (
       <div className={`tyn-main tyn-content-inner ${showInfo && width < 768 ? "main-shown":""}`} id="tynMain">
          <div className="container">
@@ -164,412 +165,244 @@ const MainContact = ({info,showInfo,onHideInfo}) => {
                            </div>
                         </div>
                      </Tabs.TabPane>
-                     <Tabs.TabPane tab={"Gallery"} key={3} className="tab-pane" id="profile-about">
+                     <Tabs.TabPane tab={"Gallery"} key={3} className="tab-pane" id="profile-about" >
+
                      </Tabs.TabPane>
                      <Tabs.TabPane tab={"Stories"} key={4} className="tab-pane" id="profile-about">
-
+                        <div className={"tyn-profile-details"}>
+                           <Stories id={info?.user?._id}/>
+                        </div>
                      </Tabs.TabPane>
                   </Tabs>
                   {/* .nav */}
                   {/* .tyn-list-inline */}
                </div>
                {/* .tyn-profile-nav */}
-               <div className="tyn-profile-details">
-                  <div className="tab-content">
-                     {/* .tab-pane */}
-                     <div className="tab-pane" id="profile-gallery" tabIndex={0}>
-                        <div className="row g-3">
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/1.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-1.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/2.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-2.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/3.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-3.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/4.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-4.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/5.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-5.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/6.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-6.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/7.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-7.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/8.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-8.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/9.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-9.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/10.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-10.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/11.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-11.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/12.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-12.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/13.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-13.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/14.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-14.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/15.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-15.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                           <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">
-                              <a
-                                 href="images/gallery/contact/16.jpg"
-                                 className="glightbox tyn-thumb"
-                              >
-                                 <img
-                                    src="images/gallery/contact/thumb-16.jpg"
-                                    className="tyn-image"
-                                    alt=""
-                                 />
-                              </a>
-                           </div>
-                           {/* .col */}
-                        </div>
-                        {/* .row */}
-                     </div>
-                     {/* .tab-pane */}
-                     <div className="tab-pane" id="profile-stories" tabIndex={0}>
-                        <div className="tyn-profile-stories">
-                           <div className="row">
-                              <div className="col-lg-4 col-xl-3">
-                                 <div className="d-flex justify-content-between pb-3">
-                                    <h5 className="mb-0">Stories</h5>
-                                    <a className="link" href="#">
-                                       Expires Soon
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                           {/* .row */}
-                           <div className="row flex-lg-row-reverse g-gs">
-                              <div className="col-lg-8 col-xl-9">
-                                 <div className="tyn-stories-slider swiper swiper-slider">
-                                    <div className="swiper-wrapper">
-                                       <div className="swiper-slide">
-                                          <div className="tyn-stories-item">
-                                             <img
-                                                src="images/stories/1.jpg"
-                                                className="tyn-image"
-                                                alt=""
-                                             />
-                                             <div className="tyn-stories-content">
-                                                <h5 className="tyn-stories-title text-white">
-                                                   Boating on ohio lake
-                                                </h5>
-                                                <p className="text-white">#boating, #ohio</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       {/* .swiper-slide */}
-                                       <div className="swiper-slide">
-                                          <div className="tyn-stories-item">
-                                             <img
-                                                src="images/stories/2.jpg"
-                                                className="tyn-image"
-                                                alt=""
-                                             />
-                                             <div className="tyn-stories-content">
-                                                <h5 className="tyn-stories-title text-white">
-                                                   Wonderful evening with myself
-                                                </h5>
-                                                <p className="text-white">#evening</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       {/* .swiper-slide */}
-                                       <div className="swiper-slide">
-                                          <div className="tyn-stories-item">
-                                             <img
-                                                src="images/stories/3.jpg"
-                                                className="tyn-image"
-                                                alt=""
-                                             />
-                                             <div className="tyn-stories-content">
-                                                <h5 className="tyn-stories-title text-white">
-                                                   Autumn holidays in australia
-                                                </h5>
-                                                <p className="text-white">#Autumn, #australia</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       {/* .swiper-slide */}
-                                       <div className="swiper-slide">
-                                          <div className="tyn-stories-item">
-                                             <img
-                                                src="images/stories/4.jpg"
-                                                className="tyn-image"
-                                                alt=""
-                                             />
-                                             <div className="tyn-stories-content">
-                                                <h5 className="tyn-stories-title text-white">
-                                                   Ptotoshoot with Evelyn Martin
-                                                </h5>
-                                                <p className="text-white">#Ptotoshoot</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       {/* .swiper-slide */}
-                                       <div className="swiper-slide">
-                                          <div className="tyn-stories-item">
-                                             <img
-                                                src="images/stories/5.jpg"
-                                                className="tyn-image"
-                                                alt=""
-                                             />
-                                             <div className="tyn-stories-content">
-                                                <h5 className="tyn-stories-title text-white">
-                                                   My beautifull sister
-                                                </h5>
-                                                <p className="text-white">#sister, #goal</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       {/* .swiper-slide */}
-                                       <div className="swiper-slide">
-                                          <div className="tyn-stories-item">
-                                             <img
-                                                src="images/stories/6.jpg"
-                                                className="tyn-image"
-                                                alt=""
-                                             />
-                                             <div className="tyn-stories-content">
-                                                <h5 className="tyn-stories-title text-white">
-                                                   Frances Arnold's awesome Ptotoshoot
-                                                </h5>
-                                                <p className="text-white">#ptotoshoot</p>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       {/* .swiper-slide */}
-                                    </div>
-                                    {/* .swiper-wrapper */}
-                                    <div className="swiper-pagination" />
-                                 </div>
-                                 {/* .tyn-stories-slider */}
-                              </div>
-                              {/* .col */}
-                              <div className="col-lg-4 col-xl-3">
-                                 <div className="tyn-stories-thumb swiper swiper-slider">
-                                    <div className="swiper-wrapper">
-                                       <div className="swiper-slide">
-                                          <img
-                                             src="images/stories/thumb-1.jpg"
-                                             className="tyn-image"
-                                             alt=""
-                                          />
-                                       </div>
-                                       <div className="swiper-slide">
-                                          <img
-                                             src="images/stories/thumb-2.jpg"
-                                             className="tyn-image"
-                                             alt=""
-                                          />
-                                       </div>
-                                       <div className="swiper-slide">
-                                          <img
-                                             src="images/stories/thumb-3.jpg"
-                                             className="tyn-image"
-                                             alt=""
-                                          />
-                                       </div>
-                                       <div className="swiper-slide">
-                                          <img
-                                             src="images/stories/thumb-4.jpg"
-                                             className="tyn-image"
-                                             alt=""
-                                          />
-                                       </div>
-                                       <div className="swiper-slide">
-                                          <img
-                                             src="images/stories/thumb-5.jpg"
-                                             className="tyn-image"
-                                             alt=""
-                                          />
-                                       </div>
-                                       <div className="swiper-slide">
-                                          <img
-                                             src="images/stories/thumb-6.jpg"
-                                             className="tyn-image"
-                                             alt=""
-                                          />
-                                       </div>
-                                    </div>
-                                 </div>
-                                 {/* .tyn-stories-thumb */}
-                              </div>
-                              {/* .col */}
-                           </div>
-                           {/* .row */}
-                        </div>
-                        {/* .tyn-profile-stories */}
-                     </div>
-                     {/* .tab-pane */}
-                  </div>
-                  {/* .tab-content */}
-               </div>
+               {/*<div className="tyn-profile-details">*/}
+               {/*   <div className="tab-content">*/}
+               {/*      /!* .tab-pane *!/*/}
+               {/*      <div className="tab-pane" id="profile-gallery" tabIndex={0}>*/}
+               {/*         <div className="row g-3">*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/1.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-1.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/2.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-2.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/3.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-3.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/4.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-4.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/5.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-5.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/6.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-6.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/7.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-7.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/8.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-8.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/9.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-9.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/10.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-10.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/11.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-11.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/12.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-12.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/13.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-13.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/14.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-14.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/15.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-15.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*            <div className="col-xxl-2 col-xl-3 col-lg-4 col-6">*/}
+               {/*               <a*/}
+               {/*                  href="images/gallery/contact/16.jpg"*/}
+               {/*                  className="glightbox tyn-thumb"*/}
+               {/*               >*/}
+               {/*                  <img*/}
+               {/*                     src="images/gallery/contact/thumb-16.jpg"*/}
+               {/*                     className="tyn-image"*/}
+               {/*                     alt=""*/}
+               {/*                  />*/}
+               {/*               </a>*/}
+               {/*            </div>*/}
+               {/*            /!* .col *!/*/}
+               {/*         </div>*/}
+               {/*         /!* .row *!/*/}
+               {/*      </div>*/}
+               {/*      /!* .tab-pane *!/*/}
+               {/*      <div className="tab-pane" id="profile-stories" tabIndex={0}>*/}
+
+               {/*         /!* .tyn-profile-stories *!/*/}
+               {/*      </div>*/}
+               {/*      /!* .tab-pane *!/*/}
+               {/*   </div>*/}
+               {/*   /!* .tab-content *!/*/}
+               {/*</div>*/}
                {/* .tyn-profile-details */}
             </div>
          </div>

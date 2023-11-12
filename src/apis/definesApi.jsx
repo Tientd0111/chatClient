@@ -29,5 +29,12 @@ const apis = {
    my_noti:{
       uri: 'notification/my-notification'
    },
+
+   getStoryById:{
+     uri: 'story/get-story-by-id/'
+   },
+   getStoryNew:{
+     uri: 'story/get-all-story'
+   },
 }
 export default apis

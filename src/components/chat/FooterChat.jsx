@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsFillEmojiWinkFill, BsFillSendFill, BsImage, BsMicFill, BsPlusLg } from 'react-icons/bs'
 import axios from 'axios'
 import environmentConfig from '@/apis/environmentConfig.jsx'
@@ -38,6 +38,14 @@ const FooterChat = ({msgRef,onSendMessage,onTyping}) => {
    const onEmojiClick = (emojiObject) => {
       msgRef.current.value += emojiObject.emoji
    };
+
+   useEffect(()=>{
+      document.addEventListener('click', function(event) {
+         if (!popup.contains(event.target)) {
+             setVisitableEmoji(false)
+         }
+      });
+   },[])
 
 
    return (
@@ -108,7 +116,7 @@ const FooterChat = ({msgRef,onSendMessage,onTyping}) => {
                   </label>
                </li>
                <li className="d-none d-sm-block" style={{position:'relative'}}>
-                  <button className="btn btn-icon btn-light btn-md btn-pill" onClick={()=>setVisitableEmoji(!visitableEmoji)}>
+                  <button id={"popup"} className="btn btn-icon btn-light btn-md btn-pill" onClick={()=>setVisitableEmoji(!visitableEmoji)}>
                      {/* emoji-smile-fill */}
                      <BsFillEmojiWinkFill />
                   </button>

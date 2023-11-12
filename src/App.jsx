@@ -6,6 +6,7 @@ import useUserStore from '@/stores/useUserStore.jsx'
 import Contact from '@/pages/contact/Contact.jsx'
 import path from '@/constants/path.jsx'
 import Chat from '@/pages/chat/Chat'
+import Story from '@/pages/story/Story.jsx'
 
 // import { privateRoutes, routes } from '@/routes/index.js'
 
@@ -41,6 +42,7 @@ function App() {
                         <ListRoute>
                            <Route element={<Chat/>} path={path.CHAT} />
                            <Route element={<Contact/>} path={path.CONTACT} />
+                           <Route element={<Story/>} path={path.STORY} />
                         </ListRoute>
                      </RequireAuth>
                </div>

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import avatar from "../assets/images/avatar/3.jpg"
-import { Dropdown, Space } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { Link, NavLink } from 'react-router-dom'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 import useUserStore from '@/stores/useUserStore.jsx'
 import environmentConfig from '@/apis/environmentConfig.jsx'
@@ -73,22 +70,22 @@ const Header = () => {
             <div className="tyn-appbar-content">
                <ul className="tyn-appbar-nav tyn-appbar-nav-start">
                   <li className="tyn-appbar-item">
-                     <Link className="tyn-appbar-link" to={path.CHAT}>
+                     <NavLink className="tyn-appbar-link" to={path.CHAT}>
                         <BsFillChatQuoteFill/>
                         <span className="d-none">Chats</span>
-                     </Link>
+                     </NavLink>
                   </li>
                   <li className="tyn-appbar-item">
-                     <Link className="tyn-appbar-link" to={path.CONTACT}>
+                     <NavLink className="tyn-appbar-link" to={path.CONTACT}>
                         <HiMiniUserGroup/>
                         <span className="d-none">Contacts</span>
-                     </Link>
+                     </NavLink>
                   </li>
                   <li className="tyn-appbar-item d-none d-sm-inline-flex">
-                     <Link className="tyn-appbar-link" to={"stories.html"}>
+                     <NavLink className="tyn-appbar-link" to={path.STORY}>
                         <BsSubtract/>
                         <span className="d-none">Stories</span>
-                     </Link>
+                     </NavLink>
                   </li>
                </ul>
                <ul className="tyn-appbar-nav tyn-appbar-nav-end">
@@ -190,14 +187,20 @@ const Header = () => {
                                     <li className="inline-flex">
                                        <div className="form-check">
                                           <input className="form-check-input" type="radio" name="themeMode" id="dark"
-                                                 value="dark" onClick={()=>setCurrentMode("dark")} checked={currentMode === "dark" && true}/>
+                                                 value="dark" onClick={()=>{
+                                                    setCurrentMode("dark")
+                                                   document.body.style.backgroundColor = "#0f172a";
+                                                 }} checked={currentMode === "dark" && true}/>
                                              <label className="form-check-label small" htmlFor="dark"> On </label>
                                        </div>
                                     </li>
                                     <li className="inline-flex">
                                        <div className="form-check">
                                           <input className="form-check-input" type="radio" name="themeMode" id="light"
-                                                 value="light" onClick={()=>setCurrentMode("light")} checked={currentMode === "light" && true}/>
+                                                 value="light" onClick={()=>{
+                                                    setCurrentMode("light")
+                                                   document.body.style.backgroundColor = "#dbeafe";
+                                          }} checked={currentMode === "light" && true}/>
                                              <label className="form-check-label small" htmlFor="light"> Off </label>
                                        </div>
                                     </li>
