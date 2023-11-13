@@ -24,11 +24,18 @@ const Story = () => {
       setStoryAct(data)
    }
 
+   const nextStory = () => {
+      const nextIndex = listStoryNew.findIndex(item => item === storyAct) + 1;
+      if(nextIndex < listStoryNew.length){
+         setStoryAct(listStoryNew[nextIndex])
+      }
+   }
+
    return (
       <LayoutMain>
          <div className={"tyn-content tyn-stories tyn-stories-page has-aside-sticky"}>
             <SideBarStory storyAct={storyAct} listStoryNew={listStoryNew} handleChoose={handleChoose}/>
-            <MainStory storyAct={storyAct}/>
+            <MainStory listStoryChild={storyAct?.stories} next={nextStory}/>
          </div>
       </LayoutMain>
    )

@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 
 const SideBarStory = ({listStoryNew,handleChoose,storyAct}) => {
-   useEffect(() => {
-      const time = setTimeout(() => {
-         const nextIndex = listStoryNew.findIndex(item => item === storyAct) + 1;
-         if(nextIndex >= listStoryNew.length){
-            clearTimeout(time)
-         }else {
-            handleChoose(listStoryNew[nextIndex])
-         }
-      }, 5000);
-   }, [storyAct]);
-
+   // useEffect(() => {
+   //    const time = setTimeout(() => {
+   //       const nextIndex = listStoryNew.findIndex(item => item === storyAct) + 1;
+   //       if(nextIndex >= listStoryNew.length){
+   //          clearTimeout(time)
+   //       }else {
+   //          handleChoose(listStoryNew[nextIndex])
+   //       }
+   //    }, 5000);
+   // }, [storyAct]);
+   console.log(listStoryNew)
    return (
       <div className="tyn-aside tyn-aside-sticky" style={{height:"calc(100vh - 73px)"}}>
          <div className="tyn-aside-head">
