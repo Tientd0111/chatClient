@@ -35,7 +35,7 @@ const Story = () => {
       <LayoutMain>
          <div className={"tyn-content tyn-stories tyn-stories-page has-aside-sticky"}>
             <SideBarStory storyAct={storyAct} listStoryNew={listStoryNew} handleChoose={handleChoose}/>
-            <MainStory listStoryChild={storyAct?.stories} next={nextStory}/>
+            <MainStory listStoryChild={storyAct?.stories} user={storyAct?.user} next={nextStory}/>
          </div>
       </LayoutMain>
    )

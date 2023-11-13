@@ -14,7 +14,7 @@ const SideBarStory = ({listStoryNew,handleChoose,storyAct}) => {
    // }, [storyAct]);
    console.log(listStoryNew)
    return (
-      <div className="tyn-aside tyn-aside-sticky" style={{height:"calc(100vh - 73px)"}}>
+      <div className="tyn-aside tyn-aside-sticky" style={{height:"100vh"}}>
          <div className="tyn-aside-head">
             <div className="tyn-aside-head-text">
                <h3 className="tyn-aside-title tyn-title">Stories</h3>
@@ -49,13 +49,16 @@ const SideBarStory = ({listStoryNew,handleChoose,storyAct}) => {
                <div className="tyn-stories-thumb swiper swiper-slider">
                   <div className="swiper-wrapper" style={{display:'grid',gridTemplateColumns:"repeat(2, 2fr)"}}>
                      {listStoryNew.map((item)=>(
-                        <div className={`swiper-slide swiper-slide-visible ${item?._id === storyAct?._id ? "swiper-slide-thumb-active":""}`} key={item?._id} onClick={()=>handleChoose(item)}>
+                        <div style={{position:'relative',height:'200px'}} className={`swiper-slide swiper-slide-visible ${item?._id === storyAct?._id ? "swiper-slide-thumb-active":""}`} key={item?._id} onClick={()=>handleChoose(item)}>
                            <img
                               src={environmentConfig.BASE_URI + item?.stories?.[0]?.file}
                               className="tyn-image"
                               alt=""
                               style={{height:'100%',objectFit:'cover'}}
                            />
+                           <div style={{background:"#fff",position:'absolute',top:'20px',left:'18px',width:'50px',height:'50px',borderRadius:'50%'}}>
+                              <img style={{objectFit:'cover',width:'50px',height:'50px',borderRadius:'50%',padding:'2px',border:"3px solid #2bc48a"}} src={environmentConfig.BASE_URI + item?.user?.avatar} alt='' />
+                           </div>
                         </div>
                      ))}
                   </div>
