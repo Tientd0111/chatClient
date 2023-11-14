@@ -26,5 +26,16 @@ const useConversationStore = create(set => ({
    },
    infoConversation:{},
    loadingGetMyConversationById: false,
+   setInfoConversation: (data) => {set({infoConversation: data})},
+
+   createConversation: async (bodyParameters) => {
+      set({loadingCreateConversation: true})
+      try {
+         return await callService(apis.createConversation.uri , "POST", bodyParameters, true)
+      } catch (e) {
+         set({loadingCreateConversation: false})
+      }
+   },
+   loadingCreateConversation: false,
 }));
 export default useConversationStore;

@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import environmentConfig from '@/apis/environmentConfig.jsx'
 import { getDate } from '@/utils/getDate.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
+import { AiOutlinePlus } from 'react-icons/ai'
+import ModalFriend from '@/components/modal/ModalFriend.jsx'
 let mClearTimeout = -1
-const SideBarChat = ({listConversation,idConversation,chooseConversation}) => {
+const SideBarChat = ({listConversation,idConversation,chooseConversation,handleOpenListFriend}) => {
    const id = JSON.parse(localStorage?.getItem("user"))._id
    const [msgTyping,setMsgTyping] = useState()
    const {socket} = useSocket(state => ({
@@ -34,18 +36,10 @@ const SideBarChat = ({listConversation,idConversation,chooseConversation}) => {
                         className="link"
                         data-bs-toggle="modal"
                         data-bs-target="#newChat"
+                        onClick={()=>handleOpenListFriend()}
                      >
                         {/* plus */}
-                        <svg
-                           xmlns="http://www.w3.org/2000/svg"
-                           width={16}
-                           height={16}
-                           fill="currentColor"
-                           className="bi bi-plus"
-                           viewBox="0 0 16 16"
-                        >
-                           <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                        </svg>
+                        <AiOutlinePlus/>
                         <span>New</span>
                      </button>
                   </li>

@@ -14,6 +14,7 @@ const InfoChat = ({ showInfo ,infoConversation,listImage,onDisplayInfo}) => {
    const handleTab = (tab) => {
       setTabAct(tab)
    }
+   console.log(infoConversation)
    return (
       <div className={`tyn-chat-content-aside ${showInfo ? 'show-aside' : ''}`} id='tynChatAside'>
          <div className='tyn-chat-cover'>

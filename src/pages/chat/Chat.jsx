@@ -6,15 +6,15 @@ import useConversationStore from '@/stores/useConversationStore.jsx'
 import useMessageStore from '@/stores/useMessageStore.jsx'
 // import { useSocket } from '@/stores/useSocket.jsx'
 import ModalCallVideo from '@/components/modal/ModalCallVideo.jsx'
-import { usePeerContext } from '@/contexts/Peer.jsx'
 import ModalncomingCall from '@/components/modal/ModalncomingCall'
 import ModalOnGoingCall from '@/components/modal/ModalOnGoingCall.jsx'
 import PeerService from '../../constants/Peer'
-import ModalTest from '@/components/modal/ModalTest.jsx'
 import useWindowDimensions from '@/hook/useWindowDimensions.jsx'
 import { useSocket } from '@/contexts/SocketProvider.jsx'
+import ModalFriend from '@/components/modal/ModalFriend.jsx'
 
 const Home = () => {
+   const modalListFriend = useRef()
    const msgRef = useRef()
    const call = useRef()
    const incomingCall = useRef()
@@ -39,11 +39,15 @@ const Home = () => {
       listConversation,
       getConversationById,
       infoConversation,
+      createConversation,
+      setInfoConversation,
    } = useConversationStore(state => ({
       getMyConversation: state.getMyConversation,
       listConversation: state.listConversation,
       getConversationById: state.getMyConversationById,
       infoConversation: state.infoConversation,
+      createConversation: state.createConversation,
+      setInfoConversation: state.setInfoConversation
    }))
 
    const { getListMessage, getListImage } = useMessageStore(state => ({
@@ -53,6 +57,7 @@ const Home = () => {
 
    const socket = useSocket();
 
+// CHAT MESSAGE
    async function getMessage(id) {
       await getListMessage(id).then(res => {
          setListMessage(res?.message)
@@ -130,7 +135,27 @@ const Home = () => {
       })
    }
 
-   //CALL Video
+   const handleOpenListFriend = () => {
+      modalListFriend.current.open()
+   }
+
+   const handleCreateConversation = (data) => {
+      const body = {
+         user_1: idUser,
+         user_2: data
+      }
+      createConversation(body).then(res => {
+         if(res?.status === 200){
+            setInfoConversation(res?.conversation)
+            modalListFriend.current.close()
+            setId(res?.conversation?._id)
+            getMyConversation(idUser)
+         }
+      })
+   }
+//CHAT MESSAGE
+
+//CALL Video
    const callVideo = async (data) => {
       const offer = await PeerService.getOffer()
       const body = {
@@ -289,13 +314,12 @@ const Home = () => {
       });
    };
 
-
-   // End call
    const endCall = async (data) => {
       console.log("aaa",id)
       socket.emit("end-call", {conversation_id: id,from: idUser})
    }
 
+// CALL VIDEO
    // mobile
    const onChangeShowMessage = () => {
       setShowMessage(false)
@@ -310,6 +334,7 @@ const Home = () => {
                listConversation={listConversation}
                idConversation={id}
                chooseConversation={chooseConversation}
+               handleOpenListFriend={handleOpenListFriend}
             />
             <MainChat callVideo={callVideo} listImage={listImage} onTyping={onTyping}
                       infoConversation={infoConversation} listMessage={listMessage} msgRef={msgRef}
@@ -318,10 +343,10 @@ const Home = () => {
                       onChangeShowMessage={onChangeShowMessage}
             />
          </div>
-         {/*<ModalTest sendStreams={sendStreams} myStream={myStream} remoteStream={remoteStream} ref={call}/>*/}
          <ModalCallVideo  infoConversation={infoConversation} myStream={myStream} ref={call} />
          <ModalncomingCall infoConversation={infoConversation} ref={incomingCall} acceptCall={acceptCall} />
          <ModalOnGoingCall video={video} handleMic={handleMic} sendStreams={handleVideo} endCall={endCall} mic={mic} ref={ongoingCall} myStream={myStream} remoteStream={remoteStream} />
+         <ModalFriend ref={modalListFriend} handleCreateConversation={handleCreateConversation} />
       </LayoutMain>
    )
 }

@@ -38,7 +38,6 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
       })
       return () => socket.off()
    },[])
-   console.log(statusVideo)
    return (
       <Modal
          footer={null}

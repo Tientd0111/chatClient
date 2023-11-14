@@ -187,7 +187,7 @@ const Header = () => {
                                     <li className="inline-flex">
                                        <div className="form-check">
                                           <input className="form-check-input" type="radio" name="themeMode" id="dark"
-                                                 value="dark" onClick={()=>{
+                                                 value="dark" onChange={()=>{
                                                     setCurrentMode("dark")
                                                    document.body.style.backgroundColor = "#0f172a";
                                                  }} checked={currentMode === "dark" && true}/>
@@ -197,7 +197,7 @@ const Header = () => {
                                     <li className="inline-flex">
                                        <div className="form-check">
                                           <input className="form-check-input" type="radio" name="themeMode" id="light"
-                                                 value="light" onClick={()=>{
+                                                 value="light" onChange={()=>{
                                                     setCurrentMode("light")
                                                    document.body.style.backgroundColor = "#dbeafe";
                                           }} checked={currentMode === "light" && true}/>

@@ -57,7 +57,7 @@ const MainStory = ({ listStoryChild,next,user }) => {
                         <div className='tyn-stories-content'>
                            <div style={{display:'flex',gap:'10px',alignItems:'center'}}>
                               <img style={{objectFit:'cover',width:'40px',height:'40px',borderRadius:'50%',padding:'2px',border:"1px solid #fff"}} src={environmentConfig.BASE_URI + user?.avatar} alt='' />
-                              <h6 >{user?.name}</h6>
+                              <h6 style={{color:"#fff"}}>{user?.name}</h6>
                            </div>
                            {/*<h5 className='tyn-stories-title text-white'>*/}
                            {/*   Boating on ohio lake*/}

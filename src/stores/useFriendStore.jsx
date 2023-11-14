@@ -3,10 +3,10 @@ import {callService} from "../apis/baseRequest";
 import apis from "../apis/definesApi";
 
 const useFriendStore = create(set => ({
-   getListFriend: async () => {
+   getListFriend: async (query) => {
       set({loadingGetListFriend: true})
       try {
-         const res = await callService(apis.get_friend.uri, "GET", {}, true)
+         const res = await callService(apis.get_friend.uri + `${query? `?name=${query}`:""}`, "GET", {}, true)
          set({listFriend: res.friend, loadingGetListFriend: false})
       } catch (e) {
          set({loadingGetListFriend: false})

@@ -8,6 +8,9 @@ const apis = {
    myInfo: {
       uri: 'auth/info'
    },
+   createConversation:{
+      uri: 'conversation/create'
+   },
    getMyConversation:{
       uri: 'conversation/my-conversation/'
    },
