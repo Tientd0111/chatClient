@@ -7,6 +7,8 @@ import axios from 'axios'
 const useUserStore = create(set => ({
    login: async (bodyParameters) => {
       try {
+         const ip = await axios.get('https://api.ipify.org/')
+         bodyParameters.ip = ip.data
          set({loadingLogin: true})
          const response = await callService(apis.login.uri, 'POST', bodyParameters)
          message.success(response?.msg)

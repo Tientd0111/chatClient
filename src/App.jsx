@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes as ListRoute } from 'react-router-dom'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useStateContext } from '@/contexts/ContextProvider.jsx'
 import Login from '@/pages/user/Login.jsx'
 import useUserStore from '@/stores/useUserStore.jsx'
@@ -28,7 +28,36 @@ function App() {
       }
    },[])
 
+   const [position, setPosition] = useState(null);
 
+   useEffect(() => {
+      const getLocation = () => {
+         if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+               (position) => {
+                  setPosition({
+                     lat: position.coords.latitude,
+                     lng: position.coords.longitude
+                  });
+               },
+               (error) => {
+                  console.error(error);
+               },
+               {
+                  enableHighAccuracy: true,
+                  timeout: 5000,
+                  maximumAge: 0,
+               }
+            );
+         } else {
+            console.error('Geolocation is not supported by this browser.');
+         }
+      };
+
+      getLocation();
+   }, []);
+
+   console.log(position)
 
    return (
       <div data-bs-theme={currentMode}>
