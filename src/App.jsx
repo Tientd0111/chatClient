@@ -15,8 +15,9 @@ function App() {
 
    const token = localStorage.getItem("key")
 
-   const {getMyInfo} = useUserStore(state => ({
+   const {getMyInfo,setLocation} = useUserStore(state => ({
       getMyInfo: state.getMyInfo,
+      setLocation: state.setLocation
    }))
 
    useEffect(()=>{
@@ -28,36 +29,30 @@ function App() {
       }
    },[])
 
-   const [position, setPosition] = useState(null);
 
    useEffect(() => {
-      const getLocation = () => {
-         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-               (position) => {
-                  setPosition({
-                     lat: position.coords.latitude,
-                     lng: position.coords.longitude
-                  });
-               },
-               (error) => {
-                  console.error(error);
-               },
-               {
-                  enableHighAccuracy: true,
-                  timeout: 5000,
-                  maximumAge: 0,
-               }
-            );
-         } else {
-            console.error('Geolocation is not supported by this browser.');
+      const watchId = navigator.geolocation.watchPosition(
+         (position) => {
+            setLocation({
+               lat: position.coords.latitude,
+               lng: position.coords.longitude
+            });
+         },
+         (error) => {
+            console.error(error);
+         },
+         {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
          }
-      };
+      )
 
-      getLocation();
+      return () => {
+         navigator.geolocation.clearWatch(watchId);
+      };
    }, []);
 
-   console.log(position)
 
    return (
       <div data-bs-theme={currentMode}>

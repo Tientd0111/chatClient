@@ -38,5 +38,8 @@ const useUserStore = create(set => ({
    },
    loadingGetMyInfo: false,
    info:{},
+
+   location: {},
+   setLocation: (data) => {set({location: data})},
 }));
 export default useUserStore;
