@@ -23,8 +23,8 @@ const Login = () => {
    return (
       <div className="tyn-content tyn-auth tyn-auth-centered">
          <div className="container">
-            <p>{"lat :" + location.lat}</p>
-            <p>{"lng :" + location.lng}</p>
+            <p>{"lat :" + location.latitude}</p>
+            <p>{"lng :" + location.longitude}</p>
             <div className="row justify-content-center">
                <div className="col-xl-4 col-lg-5 col-md-7 col-sm-9">
                   <div className="my-3 text-center">

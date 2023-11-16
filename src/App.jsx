@@ -7,6 +7,7 @@ import Contact from '@/pages/contact/Contact.jsx'
 import path from '@/constants/path.jsx'
 import Chat from '@/pages/chat/Chat'
 import Story from '@/pages/story/Story.jsx'
+import haversine from 'haversine';
 
 // import { privateRoutes, routes } from '@/routes/index.js'
 
@@ -34,11 +35,21 @@ function App() {
       const watchId = navigator.geolocation.watchPosition(
          (position) => {
             const newLocation = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude,
+               latitude: position.coords.latitude,
+               longitude: position.coords.longitude,
             };
-            console.log(newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng)
-            if (newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng) {
+            // if (newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng) {
+            //    setCurrentLocation(newLocation);
+            //    setLocation(newLocation);
+            // }
+            if (currentLocation) {
+               const distance = haversine(currentLocation, newLocation, { unit: 'eter' });
+               console.log("x",distance)
+               if (distance > 50) {
+                  setCurrentLocation(newLocation);
+                  setLocation(newLocation);
+               }
+            } else {
                setCurrentLocation(newLocation);
                setLocation(newLocation);
             }
