@@ -42,14 +42,17 @@ function App() {
             //    setCurrentLocation(newLocation);
             //    setLocation(newLocation);
             // }
+            console.log("curr",currentLocation)
             if (currentLocation) {
                const distance = haversine(currentLocation, newLocation, { unit: 'eter' });
                console.log("x",distance)
-               if (distance > 50) {
+               if (distance > 100) {
                   setCurrentLocation(newLocation);
                   setLocation(newLocation);
+
                }
             } else {
+               console.log("y")
                setCurrentLocation(newLocation);
                setLocation(newLocation);
             }
