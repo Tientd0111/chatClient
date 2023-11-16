@@ -39,35 +39,40 @@ function App() {
                latitude: position.coords.latitude,
                longitude: position.coords.longitude,
             };
-            // if (newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng) {
+            if (newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng) {
+               setCurrentLocation(newLocation);
+               setLocation(newLocation);
+               socket.emit("push_location",newLocation)
+            }else{
+               setCurrentLocation(newLocation);
+               setLocation(newLocation);
+               socket.emit("push_location",newLocation)
+            }
+            // console.log("curr",currentLocation)
+            // if (currentLocation) {
+            //    const distance = haversine(currentLocation, newLocation, { unit: 'meter' });
+            //    console.log("x",distance)
+            //    if (distance === 0) {
+            //       setCurrentLocation(newLocation);
+            //       setLocation(newLocation);
+            //       socket.emit("push_location",newLocation)
+            //    }
+            // } else {
+            //    console.log("y")
             //    setCurrentLocation(newLocation);
             //    setLocation(newLocation);
             // }
-            console.log("curr",currentLocation)
-            if (currentLocation) {
-               const distance = haversine(currentLocation, newLocation, { unit: 'meter' });
-               console.log("x",distance)
-               if (distance > 100) {
-                  socket.emit("push_location",newLocation)
-                  setCurrentLocation(newLocation);
-                  setLocation(newLocation);
-
-               }
-            } else {
-               console.log("y")
-               setCurrentLocation(newLocation);
-               setLocation(newLocation);
-            }
          },
          (error) => {
             console.error(error);
          },
          {
-            enableHighAccuracy: true,
+            // enableHighAccuracy: true,
             timeout: 5000,
             maximumAge: 0,
          }
       )
+      console.log("currentLocation",currentLocation)
 
       return () => {
          navigator.geolocation.clearWatch(watchId);
