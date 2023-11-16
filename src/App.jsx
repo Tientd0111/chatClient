@@ -44,7 +44,7 @@ function App() {
             // }
             console.log("curr",currentLocation)
             if (currentLocation) {
-               const distance = haversine(currentLocation, newLocation, { unit: 'eter' });
+               const distance = haversine(currentLocation, newLocation, { unit: 'meter' });
                console.log("x",distance)
                if (distance > 100) {
                   setCurrentLocation(newLocation);
