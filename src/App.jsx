@@ -8,6 +8,7 @@ import path from '@/constants/path.jsx'
 import Chat from '@/pages/chat/Chat'
 import Story from '@/pages/story/Story.jsx'
 import haversine from 'haversine';
+import { useSocket } from '@/contexts/SocketProvider.jsx'
 
 // import { privateRoutes, routes } from '@/routes/index.js'
 
@@ -15,7 +16,7 @@ function App() {
    const {currentMode} = useStateContext()
 
    const token = localStorage.getItem("key")
-
+   const socket = useSocket();
    const {getMyInfo,setLocation} = useUserStore(state => ({
       getMyInfo: state.getMyInfo,
       setLocation: state.setLocation
@@ -47,6 +48,7 @@ function App() {
                const distance = haversine(currentLocation, newLocation, { unit: 'meter' });
                console.log("x",distance)
                if (distance > 100) {
+                  socket.emit("push_location",newLocation)
                   setCurrentLocation(newLocation);
                   setLocation(newLocation);
 
