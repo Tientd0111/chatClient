@@ -29,14 +29,19 @@ function App() {
       }
    },[])
 
-
+   const [currentLocation, setCurrentLocation] = useState(null);
    useEffect(() => {
       const watchId = navigator.geolocation.watchPosition(
          (position) => {
-            setLocation({
+            const newLocation = {
                lat: position.coords.latitude,
-               lng: position.coords.longitude
-            });
+               lng: position.coords.longitude,
+            };
+            console.log(newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng)
+            if (newLocation?.lat !== currentLocation?.lat && newLocation?.lng !== currentLocation?.lng) {
+               setCurrentLocation(newLocation);
+               setLocation(newLocation);
+            }
          },
          (error) => {
             console.error(error);
