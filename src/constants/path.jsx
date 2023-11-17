@@ -3,6 +3,7 @@ const path = {
    CHAT: "/",
    CONTACT: "/contact",
    STORY: "/story",
+   MAP: "/map",
    TEST: "/test",
 };
 

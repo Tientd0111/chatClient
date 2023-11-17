@@ -18,6 +18,7 @@ import { HiMiniUserGroup } from 'react-icons/hi2'
 import path from '@/constants/path.jsx'
 import { useSocket } from '@/stores/useSocket.jsx'
 import useNotificationStore from '@/stores/useNotificationStore.jsx'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 
 
 const Header = () => {
@@ -85,6 +86,12 @@ const Header = () => {
                      <NavLink className="tyn-appbar-link" to={path.STORY}>
                         <BsSubtract/>
                         <span className="d-none">Stories</span>
+                     </NavLink>
+                  </li>
+                  <li className="tyn-appbar-item d-none d-sm-inline-flex">
+                     <NavLink className="tyn-appbar-link" to={path.MAP}>
+                        <FaMapMarkerAlt />
+                        <span className="d-none">Map</span>
                      </NavLink>
                   </li>
                </ul>
