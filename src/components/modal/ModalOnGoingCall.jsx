@@ -77,7 +77,7 @@ const ModalOnGoingCall = forwardRef((props, ref) => {
                         </div>
                         <div className="tyn-media tyn-media-1x1_3 tyn-size-3xl border-dark">
                            {video ?
-                              <ReactPlayer url={myStream} playing={true} width={96} height={125} muted />:
+                              <ReactPlayer url={myStream} playing={true} width={"100%"} height={"100%"} muted />:
                               <img src="../../../src/assets/images/v-cover/2.jpg" alt="" />
                            }
                         </div>
