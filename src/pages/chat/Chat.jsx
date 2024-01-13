@@ -23,7 +23,7 @@ const Home = () => {
    const {width} = useWindowDimensions()
 
    const [listMessage, setListMessage] = useState()
-   const [id, setId] = useState()
+   let [id, setId] = useState()
    const [listImage, setListImage] = useState()
    const [myStream, setMyStream] = useState(null)
    const [infoCall, setInfoCall] = useState()
@@ -33,7 +33,6 @@ const Home = () => {
    const [showMessage, setShowMessage] = useState(false)
 
    const idUser = JSON.parse(localStorage?.getItem('user'))._id
-
    const {
       getMyConversation,
       listConversation,
@@ -106,22 +105,25 @@ const Home = () => {
       socket.emit('typing', id)
    }
 
+   useEffect(()=>{
+      if(id === undefined){
+         setId(listConversation?.[0]?._id)
+         // getListImage(listConversation?.[0]?._id).then(res => {
+         //    setListImage(res?.list_image)
+         // })
+      }
+   },[listConversation])
 
    useEffect(() => {
-      if (!id) {
-         setId(listConversation?.[0]?._id)
-         getListImage(listConversation?.[0]?._id).then(res => {
-            setListImage(res?.list_image)
-         })
-      } else {
-         funcGetConversationById(id)
-         getMessage(id)
-         socket.emit('join', id)
-         getListImage(id).then(res => {
-            setListImage(res?.list_image)
-         })
-      }
+      funcGetConversationById(id)
+      getMessage(id)
+      socket.emit('join', id)
+      getListImage(id).then(res => {
+         setListImage(res?.list_image)
+      })
    }, [id, listConversation])
+
+
 
 
    const chooseConversation = (id) => {
@@ -154,7 +156,6 @@ const Home = () => {
       })
    }
 //CHAT MESSAGE
-
 //CALL Video
    const callVideo = async (data) => {
       const offer = await PeerService.getOffer()
@@ -210,22 +211,31 @@ const Home = () => {
       },
       [sendStreams],
    )
-
-   const handleNegoNeeded = useCallback(async (id) => {
+   console.log("log bên ngoài", id)
+   const handleNegoNeeded = useCallback(async () => {
       const offer = await PeerService.getOffer()
-      socket.emit('needed', { offer: offer, conversation_id: "6535d86371e025bda135a57e", call_form: idUser })
-   },[])
+      console.log("id",id)
+      const data = {
+         offer: offer,
+         conversation_id: id,
+         call_form: idUser
+      }
+
+      socket.emit('needed', data)
+   },[id])
 
    useEffect(() => {
       PeerService.peer.addEventListener('negotiationneeded', handleNegoNeeded)
       return () => {
          PeerService.peer.removeEventListener('negotiationneeded', handleNegoNeeded)
       }
-   }, [])
+   }, [id])
 
-   const handleNegoNeedIncomming = useCallback(async ({ from, offer }) => {
+   const handleNegoNeedIncomming = useCallback(async ({ from, offer,conversation_id }) => {
       const ans = await PeerService.getAnswer(offer)
-      socket.emit('done', { conversation_id: "6535d86371e025bda135a57e", call_form: idUser, offer: ans })
+      const data = { conversation_id: conversation_id, call_form: idUser, offer: ans }
+      console.log("data",data)
+      socket.emit('done', data)
       sendStreams()
    },[sendStreams])
 
